@@ -5,8 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const jobs = await Job.find(req.query);
-        res.status(200).json(jobs);
+        Job.find(req.query, (e, jobs) => {
+            if (e) throw e;
+            res.status(200).json(jobs);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -14,34 +16,23 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        const {
-            title,
-            recruiter,
-            max_applications,
-            max_positions,
-            post_date,
-            deadline,
-            skillset,
-            type,
-            duration,
-            salary,
-            rating,
-        } = req.body;
         const newJob = new Job({
-            title,
-            recruiter,
-            max_applications,
-            max_positions,
-            post_date,
-            deadline,
-            skillset,
-            type,
-            duration,
-            salary,
-            rating,
+            title: req.body.title,
+            recruiter: req.body.recruiter,
+            max_applications: req.body.max_applications,
+            max_positions: req.body.max_positions,
+            post_date: req.body.post_date,
+            deadline: req.body.deadline,
+            skillset: req.body.skillset,
+            type: req.body.type,
+            duration: req.body.duration,
+            salary: req.body.salary,
+            rating: req.body.rating,
         });
-        const job = await newJob.save();
-        res.status(200).json(job);
+        newJob.save((e, job) => {
+            if (e) throw e;
+            res.status(200).json(job);
+        });
     } catch (e) {
         res.json(e);
     }

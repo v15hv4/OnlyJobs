@@ -5,8 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const recruiters = await Recruiter.find(req.query);
-        res.status(200).json(recruiters);
+        Recruiter.find(req.query, (e, recruiters) => {
+            if (e) throw e;
+            res.status(200).json(recruiters);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -14,16 +16,17 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        const { email, password, name, contact, bio } = req.body;
         const newRecruiter = new Recruiter({
-            email,
-            password,
-            name,
-            contact,
-            bio,
+            email: req.body.email,
+            password: req.body.password,
+            name: req.body.name,
+            contact: req.body.contact,
+            bio: req.body.bio,
         });
-        const recruiter = await newRecruiter.save();
-        res.status(200).json(recruiter);
+        newRecruiter.save((e, recruiter) => {
+            if (e) throw e;
+            res.status(200).json(recruiter);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -32,7 +35,7 @@ router.post("/new", async (req, res) => {
 router.post("/edit/:id", async (req, res) => {
     try {
         Recruiter.findByIdAndUpdate(req.params.id, { $set: req.body }, (e, recruiter) => {
-            if (e) res.json(e);
+            if (e) throw e;
             else res.status(200).json(recruiter);
         });
     } catch (e) {

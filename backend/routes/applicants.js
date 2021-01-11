@@ -5,8 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const applicants = await Applicant.find(req.query).populate("skills");
-        res.status(200).json(applicants);
+        Applicant.find(req.query, (e, applicants) => {
+            if (e) throw e;
+            res.status(200).json(applicants);
+        }).populate("skills");
     } catch (e) {
         res.json(e);
     }
@@ -14,17 +16,18 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        const { email, password, name, education, skills, rating } = req.body;
         const newApplicant = new Applicant({
-            email,
-            password,
-            name,
-            education,
-            skills,
-            rating,
+            email: req.body.email,
+            password: req.body.password,
+            name: req.body.name,
+            education: req.body.education,
+            skills: req.body.skills,
+            rating: req.body.rating,
         });
-        const applicant = await newApplicant.save();
-        res.status(200).json(applicant);
+        newApplicant.save((e, applicant) => {
+            if (e) throw e;
+            res.status(200).json(applicant);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -33,8 +36,8 @@ router.post("/new", async (req, res) => {
 router.post("/edit/:id", async (req, res) => {
     try {
         Applicant.findByIdAndUpdate(req.params.id, { $set: req.body }, (e, applicant) => {
-            if (e) res.json(e);
-            else res.status(200).json(applicant);
+            if (e) throw e;
+            res.status(200).json(applicant);
         });
     } catch (e) {
         res.json(e);

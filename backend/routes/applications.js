@@ -5,8 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const applications = await Application.find(req.query);
-        res.status(200).json(applications);
+        Application.find(req.query, (e, applications) => {
+            if (e) throw e;
+            res.status(200).json(applications);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -14,20 +16,30 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        const { applicant, job, SOP, state } = req.body;
-        const newApplication = new Application({ applicant, job, SOP, state });
-        const application = await newApplication.save();
-        res.status(200).json(application);
+        const newApplication = new Application({
+            applicant: req.body.applicant,
+            job: req.body.job,
+            SOP: req.body.SOP,
+            state: req.body.state,
+        });
+        newApplication.save((e, application) => {
+            if (e) throw e;
+            res.status(200).json(application);
+        });
     } catch (e) {
         res.json(e);
     }
 });
 
 router.post("/edit/:id", async (req, res) => {
-    Application.findByIdAndDelete(req.params.id, { $set: req.body }, (err, application) => {
-        if (err) res.json({ error: err });
-        else res.status(200).json(application);
-    });
+    try {
+        Application.findByIdAndDelete(req.params.id, { $set: req.body }, (e, application) => {
+            if (e) throw e;
+            else res.status(200).json(application);
+        });
+    } catch (e) {
+        res.json(e);
+    }
 });
 
 export default router;

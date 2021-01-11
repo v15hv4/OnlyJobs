@@ -5,8 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const languages = await Language.find(req.query);
-        res.status(200).json(languages);
+        Language.find(req.query, (e, languages) => {
+            if (e) throw e;
+            res.status(200).json(languages);
+        });
     } catch (e) {
         res.json(e);
     }
@@ -14,10 +16,13 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        const { name } = req.body;
-        const newLanguage = new Language({ name });
-        const language = await newLanguage.save();
-        res.status(200).json(language);
+        const newLanguage = new Language({
+            name: req.body.name,
+        });
+        newLanguage.save((e, language) => {
+            if (e) throw e;
+            res.status(200).json(language);
+        });
     } catch (e) {
         res.json(e);
     }
