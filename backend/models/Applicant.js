@@ -26,9 +26,16 @@ const ApplicantSchema = new Schema({
         },
     ],
     rating: {
-        type: Number,
-        required: true,
-        min: 0,
+        value: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
+        amount: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
     },
     // resume: {},
     // img: {},

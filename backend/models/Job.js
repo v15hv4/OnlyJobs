@@ -54,9 +54,16 @@ const JobSchema = new Schema({
         min: 0,
     },
     rating: {
-        type: Number,
-        required: true,
-        min: 0,
+        value: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
+        amount: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
     },
 });
 
