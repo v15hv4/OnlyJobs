@@ -8,7 +8,7 @@ const JobSchema = new Schema({
         maxlength: [200, "Job title can not exceed 200 characters"],
     },
     recruiter: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: "Recruiter",
     },
@@ -33,7 +33,7 @@ const JobSchema = new Schema({
     },
     skillset: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Language",
         },
     ],

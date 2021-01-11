@@ -2,14 +2,12 @@
 - name (`string`), NOT NULL, RE [<language_regex>]
 
 # user
-- uuid (`id`), NOT NULL, UNIQUE
+- email (`email`), NOT NULL, RE [<email_regex>]
 - password (`string`), NOT NULL, HASHED
-- role (`string`), NOT NULL, IN [job applicant / recruiter]
+- name (`string`), NOT NULL, RE [<name_regex>]
 - details (`ref`), NOT NULL, IN [@applicant-details / @recruiter-details]
 
 # applicant-details
-- name (`string`), NOT NULL, RE [<name_regex>]
-- email (`email`), NOT NULL, RE [<email_regex>]
 - education (`object list`), NOT NULL, :
     - name (`string`), NOT NULL, RE [<name_regex>]
     - start-year (`int`), NOT NULL, POSITIVE
@@ -38,7 +36,7 @@
 - rating (`float`), NOT NULL, POSITIVE
 
 # application
-- applicant (`ref`), NOT NULL, @user
+- applicant (`ref`), NOT NULL, @applicant
 - job (`ref`), NOT NULL, @job
 - SOP (`text`), NOT NULL, MAX 250 words
 - state (`text`), NOT NULL, IN [applied / shortlisted / accepted / rejected]

@@ -5,15 +5,15 @@
 # user
 - /users
 - /users/new
-- /users/edit
-- /users/delete
+- /users/edit/:id
 
 # job
 - /jobs
 - /jobs/new
-- /jobs/edit
+- /jobs/edit/:id
 
 # application
 - /applications
 - /applications/new
-- /applications/edit
+- /applications/edit/:id
+- /applications/delete/:id
