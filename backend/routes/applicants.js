@@ -32,4 +32,15 @@ router.post("/edit/:id", async (req, res) => {
     });
 });
 
+router.post("/rate/:id", async (req, res) => {
+    Applicant.findByIdAndUpdate(
+        req.params.id,
+        { $inc: { "rating.value": req.body.rating, "rating.amount": 1 } },
+        (e, applicant) => {
+            if (e) res.status(500).json(e);
+            res.status(200).json(applicant);
+        }
+    );
+});
+
 export default router;
