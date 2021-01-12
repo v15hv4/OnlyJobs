@@ -3,9 +3,8 @@ import User from "./User";
 
 const RecruiterSchema = new Schema({
     contact: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0,
     },
     bio: {
         type: String,
