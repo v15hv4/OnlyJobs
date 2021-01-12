@@ -13,8 +13,8 @@ export function word_limit(input, limit) {
 }
 
 export function phone_number(input) {
-    const len = input.replace(/[^\d]/g, "").length;
-    return len > 7 && len < 13;
+    const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+    return pattern.test(input);
 }
 
 export function valid_name(input) {
