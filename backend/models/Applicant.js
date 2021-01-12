@@ -1,7 +1,6 @@
 import { Schema } from "mongoose";
-import User from "./User";
-
 import { in_future } from "./validators";
+import User from "./User";
 
 const ApplicantSchema = new Schema({
     education: [

@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { word_limit } from "./validators";
 
 const ApplicationSchema = new Schema({
     applicant: {
@@ -15,7 +16,7 @@ const ApplicationSchema = new Schema({
         type: String,
         required: true,
         validate: {
-            validator: (v) => v.split(" ").length <= 250,
+            validator: (v) => word_limit(v, 250),
             message: "SOP can not exceed 250 words!",
         },
     },
