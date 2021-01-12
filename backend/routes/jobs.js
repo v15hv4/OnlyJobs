@@ -21,7 +21,6 @@ router.post("/new", async (req, res) => {
             recruiter: req.body.recruiter,
             max_applications: req.body.max_applications,
             max_positions: req.body.max_positions,
-            post_date: req.body.post_date,
             deadline: req.body.deadline,
             skillset: req.body.skillset,
             type: req.body.type,

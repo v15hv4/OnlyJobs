@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 // routers {{{
-import languageRouter from "./routes/languages";
 import applicantRouter from "./routes/applicants";
+import applicationRouter from "./routes/applications";
+import jobRouter from "./routes/jobs";
+import languageRouter from "./routes/languages";
 import recruiterRouter from "./routes/recruiters";
 // }}}
 
@@ -19,8 +21,10 @@ app.use(express.json());
 // }}}
 
 // routes {{{
-app.use("/api/languages", languageRouter);
 app.use("/api/applicants", applicantRouter);
+app.use("/api/applications", applicationRouter);
+app.use("/api/jobs", jobRouter);
+app.use("/api/languages", languageRouter);
 app.use("/api/recruiters", recruiterRouter);
 // }}}
 
