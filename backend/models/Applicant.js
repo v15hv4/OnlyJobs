@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { in_future } from "./validators";
+import { future_year } from "./validators";
 import User from "./User";
 
 const ApplicantSchema = new Schema({
@@ -22,7 +22,7 @@ const ApplicantSchema = new Schema({
                     },
                 },
                 validate: {
-                    validator: (v) => in_future(v.start_year, v.end_year),
+                    validator: (v) => future_year(v.start_year, v.end_year),
                     message: "End year can not be earlier than start year!",
                 },
             },

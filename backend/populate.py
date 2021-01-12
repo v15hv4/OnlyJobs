@@ -86,7 +86,7 @@ for _ in range(n):
             "recruiter": choice(recruiters),
             "max_applications": randint(1, 20),
             "max_positions": randint(1, 10),
-            "deadline": f.date_this_month(before_today=False, after_today=True).isoformat(),
+            "deadline": f.date_this_month(before_today=True, after_today=False).isoformat(),
             "skillset": list(set([choice(languages)["_id"] for i in range(randint(1, 5))])),
             "type": choice(["full_time", "part_time", "work_from_home"]),
             "duration": randint(0, 6),

@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     Job.find(req.query, (e, jobs) => {
-        if (e) res.json(e);
+        if (e) res.status(500).json(e);
         res.status(200).json(jobs);
     });
 });
@@ -24,7 +24,7 @@ router.post("/new", async (req, res) => {
         rating: req.body.rating,
     });
     newJob.save((e, job) => {
-        if (e) res.json(e);
+        if (e) res.status(500).json(e);
         res.status(200).json(job);
     });
 });

@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { future_date } from "./validators";
 
 const JobSchema = new Schema({
     title: {
@@ -30,6 +31,10 @@ const JobSchema = new Schema({
     deadline: {
         type: Date,
         required: true,
+        validate: {
+            validator: (v) => future_date(new Date(), v),
+            message: "Deadline can not be in the past!",
+        },
     },
     skillset: [
         {

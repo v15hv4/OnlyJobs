@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     Application.find(req.query, (e, applications) => {
-        if (e) res.json(e);
+        if (e) res.status(500).json(e);
         res.status(200).json(applications);
     });
 });
@@ -18,14 +18,14 @@ router.post("/new", async (req, res) => {
         state: req.body.state,
     });
     newApplication.save((e, application) => {
-        if (e) res.json(e);
+        if (e) res.status(500).json(e);
         res.status(200).json(application);
     });
 });
 
 router.post("/edit/:id", async (req, res) => {
     Application.findByIdAndDelete(req.params.id, { $set: req.body }, (e, application) => {
-        if (e) res.json(e);
+        if (e) res.status(500).json(e);
         else res.status(200).json(application);
     });
 });

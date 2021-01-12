@@ -1,4 +1,9 @@
-export function in_future(past, future) {
+export function future_year(past, future) {
+    if (future) return new Date(past).getFullYear() <= new Date(future).getFullYear();
+    return true;
+}
+
+export function future_date(past, future) {
     if (future) return new Date(past) <= new Date(future);
     return true;
 }
