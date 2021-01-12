@@ -8,11 +8,21 @@ export function future_date(past, future) {
     return true;
 }
 
-export function word_limit(text, limit) {
-    return text.split(" ").length <= limit;
+export function word_limit(input, limit) {
+    return input.split(" ").length <= limit;
 }
 
-export function phone_number(number) {
-    const len = number.replace(/[^\d]/g, "").length;
+export function phone_number(input) {
+    const len = input.replace(/[^\d]/g, "").length;
     return len > 7 && len < 13;
+}
+
+export function name(input) {
+    const pattern = /^[\\p{L} .'-]+$/;
+    return pattern.test(input);
+}
+
+export function email(input) {
+    const pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+    return pattern.test(input);
 }
