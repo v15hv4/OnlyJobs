@@ -17,12 +17,12 @@ export function phone_number(input) {
     return len > 7 && len < 13;
 }
 
-export function name(input) {
-    const pattern = /^[\\p{L} .'-]+$/;
+export function valid_name(input) {
+    const pattern = /^[a-zA-Z '.]*$/;
     return pattern.test(input);
 }
 
-export function email(input) {
+export function valid_email(input) {
     const pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     return pattern.test(input);
 }

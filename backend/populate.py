@@ -23,7 +23,7 @@ targets = {
 def populate(endpoint, data):
     r = s.post(f"{host}{endpoint}", data=data, headers=headers)
     if r.status_code != 200:
-        exit(f"FAILED:\nendpoint: {endpoint}\ndata: {data}")
+        exit(f"FAILED:\n\nendpoint: {endpoint}\n\ndata: {data}\n\nresponse: {r.content}")
 
 
 print("POPULATING...")

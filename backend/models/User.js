@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { name, email } from "./validators";
+import { valid_name, valid_email } from "./validators";
 
 const options = {
     discriminatorKey: "details",
@@ -12,7 +12,7 @@ const UserSchema = new Schema(
             required: true,
             trim: true,
             validate: {
-                validator: (v) => email(v),
+                validator: (v) => valid_email(v),
                 message: "Invalid email address!",
             },
         },
@@ -25,7 +25,7 @@ const UserSchema = new Schema(
             required: true,
             trim: true,
             validate: {
-                validator: (v) => name(v),
+                validator: (v) => valid_name(v),
                 message: "Invalid name!",
             },
         },
