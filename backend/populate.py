@@ -12,11 +12,11 @@ f = Faker()
 
 # control
 targets = {
-    "jobs": {"endpoint": "/api/jobs/new", "n": 10},
-    "languages": {"endpoint": "/api/languages/new", "n": 10},
-    "recruiters": {"endpoint": "/api/recruiters/new", "n": 10},
-    "applicants": {"endpoint": "/api/applicants/new", "n": 10},
-    "applications": {"endpoint": "/api/applications/new", "n": 20},
+    "jobs": {"endpoint": "/api/jobs/new", "n": 0},
+    "languages": {"endpoint": "/api/languages/new", "n": 0},
+    "recruiters": {"endpoint": "/api/recruiters/new", "n": 0},
+    "applicants": {"endpoint": "/api/applicants/new", "n": 0},
+    "applications": {"endpoint": "/api/applications/new", "n": 30},
 }
 
 
@@ -86,7 +86,7 @@ for _ in range(n):
             "recruiter": choice(recruiters),
             "max_applications": randint(1, 20),
             "max_positions": randint(1, 10),
-            "deadline": f.date_this_month(before_today=False, after_today=True).isoformat(),
+            "deadline": f.date_this_year(before_today=False, after_today=True).isoformat(),
             "skillset": list(set([choice(languages)["_id"] for i in range(randint(1, 5))])),
             "type": choice(["full_time", "part_time", "work_from_home"]),
             "duration": randint(0, 6),
@@ -104,8 +104,8 @@ jobs = loads(s.get(f"{host}/api/jobs").text)
 for _ in range(n):
     data = dumps(
         {
-            "applicant": choice(applicants),
-            "job": choice(jobs),
+            "applicant": applicants[0],
+            "job": jobs[0],
             "SOP": f.text(),
             "state": choice(["applied", "shortlisted", "accepted", "rejected", "deleted"]),
         }

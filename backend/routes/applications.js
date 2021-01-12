@@ -11,15 +11,37 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
-    const newApplication = new Application({
-        applicant: req.body.applicant,
-        job: req.body.job,
-        SOP: req.body.SOP,
-        state: req.body.state,
-    });
-    newApplication.save((e, application) => {
+    Application.find({ applicant: req.body.applicant }, (e, applications) => {
         if (e) res.status(500).json(e);
-        res.status(200).json(application);
+
+        const openApplications = applications.filter((a) =>
+            ["applied", "shortlisted"].includes(a.state)
+        );
+
+        if (openApplications.length > 10) {
+            res.status(500).json({
+                message: "Applicant may not have more than 10 open applications!",
+            });
+            return;
+        }
+
+        if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
+            res.status(500).json({
+                message: "Applicant has already applied to this job!",
+            });
+            return;
+        }
+
+        const newApplication = new Application({
+            applicant: req.body.applicant,
+            job: req.body.job,
+            SOP: req.body.SOP,
+            state: req.body.state,
+        });
+        newApplication.save((e, application) => {
+            if (e) res.status(500).json(e);
+            res.status(200).json(application);
+        });
     });
 });
 
