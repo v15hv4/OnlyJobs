@@ -11,7 +11,7 @@ const ApplicationSchema = new Schema({
         required: true,
         ref: "Job",
     },
-    sop: {
+    SOP: {
         type: String,
         required: true,
         validate: {
@@ -23,7 +23,7 @@ const ApplicationSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        enum: ["applied", "shortlisted", "accepted", "rejected"],
+        enum: ["applied", "shortlisted", "accepted", "rejected", "deleted"],
         default: "applied",
     },
 });
