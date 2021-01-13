@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 // routers {{{
+import authRouter from "./routes/auth";
 import applicantRouter from "./routes/applicants";
 import applicationRouter from "./routes/applications";
 import jobRouter from "./routes/jobs";
@@ -21,6 +22,7 @@ app.use(express.json());
 // }}}
 
 // routes {{{
+app.use("/api/auth", authRouter);
 app.use("/api/applicants", applicantRouter);
 app.use("/api/applications", applicationRouter);
 app.use("/api/jobs", jobRouter);

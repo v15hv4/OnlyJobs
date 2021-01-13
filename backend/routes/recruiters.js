@@ -10,20 +10,6 @@ router.get("/", async (req, res) => {
     });
 });
 
-router.post("/new", async (req, res) => {
-    const newRecruiter = new Recruiter({
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-        contact: req.body.contact,
-        bio: req.body.bio,
-    });
-    newRecruiter.save((e, recruiter) => {
-        if (e) return res.status(500).json(e);
-        return res.status(200).json(recruiter);
-    });
-});
-
 router.post("/edit/:id", async (req, res) => {
     Recruiter.findByIdAndUpdate(
         req.params.id,

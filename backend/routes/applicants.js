@@ -10,20 +10,6 @@ router.get("/", async (req, res) => {
     }).populate("skills");
 });
 
-router.post("/new", async (req, res) => {
-    const newApplicant = new Applicant({
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-        education: req.body.education,
-        skills: req.body.skills,
-    });
-    newApplicant.save((e, applicant) => {
-        if (e) return res.status(500).json(e);
-        return res.status(200).json(applicant);
-    });
-});
-
 router.post("/edit/:id", async (req, res) => {
     Applicant.findByIdAndUpdate(
         req.params.id,
