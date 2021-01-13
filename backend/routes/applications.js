@@ -97,7 +97,33 @@ router.post("/accept/:id", async (req, res) => {
         { new: true },
         (e, application) => {
             if (e) return res.status(500).json(e);
-            return res.status(200).json(application);
+
+            Job.findOne({ _id: application.job }, (e, job) => {
+                if (e) return res.status(500).json(e);
+
+                // check whether job has filled all positions
+                if (job.state === "filled") {
+                    return res.status(500).json({
+                        message: "Job has reached application limit!",
+                    });
+                }
+
+                Application.find({ job: application.job, state: "accepted" }, (e, applications) => {
+                    if (e) return res.status(500).json(e);
+
+                    // update job state if filled by this application
+                    if (job.max_positions <= applications.length) {
+                        Job.findByIdAndUpdate(
+                            application.job,
+                            { $set: { state: "filled" } },
+                            (e) => {
+                                if (e) return res.status(500).json(e);
+                                return res.status(200).json(application);
+                            }
+                        );
+                    }
+                });
+            });
         }
     );
 });
