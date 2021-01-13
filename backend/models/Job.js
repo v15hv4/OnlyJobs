@@ -58,18 +58,19 @@ const JobSchema = new Schema({
         required: true,
         min: 0,
     },
-    rating: {
-        value: {
-            type: Number,
-            required: true,
-            min: 0,
+    ratings: [
+        {
+            value: {
+                type: Number,
+                required: true,
+                min: 0,
+            },
+            applicant: {
+                type: Schema.Types.ObjectId,
+                ref: "Applicant",
+            },
         },
-        amount: {
-            type: Number,
-            required: true,
-            min: 0,
-        },
-    },
+    ],
 });
 
 export default model("Job", JobSchema);

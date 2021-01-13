@@ -13,10 +13,10 @@ f = Faker()
 # control
 targets = {
     "jobs": {"endpoint": "/api/jobs/new", "n": 0},
-    "languages": {"endpoint": "/api/languages/new", "n": 0},
-    "recruiters": {"endpoint": "/api/recruiters/new", "n": 0},
-    "applicants": {"endpoint": "/api/applicants/new", "n": 0},
-    "applications": {"endpoint": "/api/applications/new", "n": 30},
+    "languages": {"endpoint": "/api/languages/new", "n": 10},
+    "recruiters": {"endpoint": "/api/recruiters/new", "n": 10},
+    "applicants": {"endpoint": "/api/applicants/new", "n": 10},
+    "applications": {"endpoint": "/api/applications/new", "n": 0},
 }
 
 
@@ -69,7 +69,6 @@ for _ in range(n):
                 for i in range(randint(0, 3))
             ],
             "skills": list(set([choice(languages)["_id"] for i in range(randint(0, 5))])),
-            "rating": {"value": randint(0, 5), "amount": randint(1, 10),},
         }
     )
     populate(endpoint, data)

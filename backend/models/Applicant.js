@@ -34,18 +34,19 @@ const ApplicantSchema = new Schema({
             ref: "Language",
         },
     ],
-    rating: {
-        value: {
-            type: Number,
-            required: true,
-            min: 0,
+    ratings: [
+        {
+            value: {
+                type: Number,
+                required: true,
+                min: 0,
+            },
+            recruiter: {
+                type: Schema.Types.ObjectId,
+                ref: "Recruiter",
+            },
         },
-        amount: {
-            type: Number,
-            required: true,
-            min: 0,
-        },
-    },
+    ],
     // resume: {},
     // img: {},
 });

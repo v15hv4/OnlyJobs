@@ -32,7 +32,8 @@ router.post("/new", async (req, res) => {
 router.post("/rate/:id", async (req, res) => {
     Job.findByIdAndUpdate(
         req.params.id,
-        { $inc: { "rating.value": req.body.rating, "rating.amount": 1 } },
+        { $push: { ratings: { value: req.body.rating, recruiter: req.body.applicant } } },
+        { new: true },
         (e, job) => {
             if (e) return res.status(500).json(e);
             return res.status(200).json(job);

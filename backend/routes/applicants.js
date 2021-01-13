@@ -17,7 +17,6 @@ router.post("/new", async (req, res) => {
         name: req.body.name,
         education: req.body.education,
         skills: req.body.skills,
-        rating: req.body.rating,
     });
     newApplicant.save((e, applicant) => {
         if (e) return res.status(500).json(e);
@@ -26,16 +25,22 @@ router.post("/new", async (req, res) => {
 });
 
 router.post("/edit/:id", async (req, res) => {
-    Applicant.findByIdAndUpdate(req.params.id, { $set: req.body }, (e, applicant) => {
-        if (e) return res.status(500).json(e);
-        return res.status(200).json(applicant);
-    });
+    Applicant.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true },
+        (e, applicant) => {
+            if (e) return res.status(500).json(e);
+            return res.status(200).json(applicant);
+        }
+    );
 });
 
 router.post("/rate/:id", async (req, res) => {
     Applicant.findByIdAndUpdate(
         req.params.id,
-        { $inc: { "rating.value": req.body.rating, "rating.amount": 1 } },
+        { $push: { ratings: { value: req.body.rating, recruiter: req.body.recruiter } } },
+        { new: true },
         (e, applicant) => {
             if (e) return res.status(500).json(e);
             return res.status(200).json(applicant);
