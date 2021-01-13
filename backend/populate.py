@@ -117,8 +117,8 @@ async def main():
     for _ in range(n):
         data = dumps(
             {
-                "applicant": applicants[0],
-                "job": jobs[0],
+                "applicant": choice(applicants),
+                "job": choice(jobs),
                 "SOP": f.text(),
                 "state": choice(["applied", "shortlisted", "accepted", "rejected", "deleted"]),
             }

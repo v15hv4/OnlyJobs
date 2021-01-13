@@ -20,15 +20,15 @@ router.post("/new", async (req, res) => {
             ["applied", "shortlisted"].includes(a.state)
         );
 
-        if (openApplications.length > 10) {
-            return res.status(500).json({
-                message: "Applicant may not have more than 10 open applications!",
-            });
-        }
-
         if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
             return res.status(500).json({
                 message: "Applicant has already applied to this job!",
+            });
+        }
+
+        if (openApplications.length > 10) {
+            return res.status(500).json({
+                message: "Applicant may not have more than 10 open applications!",
             });
         }
 
@@ -47,9 +47,22 @@ router.post("/new", async (req, res) => {
 
 // edit application details
 router.post("/edit/:id", async (req, res) => {
-    Application.findByIdAndDelete(
+    Application.findByIdAndUpdate(
         req.params.id,
         { $set: req.body },
+        { new: true },
+        (e, application) => {
+            if (e) return res.status(500).json(e);
+            return res.status(200).json(application);
+        }
+    );
+});
+
+// delete application
+router.post("/delete/:id", async (req, res) => {
+    Application.findByIdAndUpdate(
+        req.params.id,
+        { $set: { state: "deleted" } },
         { new: true },
         (e, application) => {
             if (e) return res.status(500).json(e);

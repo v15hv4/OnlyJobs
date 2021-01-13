@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Job from "../models/Job";
+import Application from "../models/Application";
 
 const router = Router();
 
@@ -29,6 +30,30 @@ router.post("/new", async (req, res) => {
         if (e) return res.status(500).json(e);
         return res.status(200).json(job);
     });
+});
+
+// delete job
+router.post("/delete/:id", async (req, res) => {
+    // set job state to "deleted"
+    Job.findByIdAndUpdate(
+        req.params.id,
+        { $set: { state: "deleted" } },
+        { new: true },
+        (e, job) => {
+            if (e) return res.status(500).json(e);
+
+            // set state of all applications for this job to "deleted"
+            Application.updateMany(
+                { job: req.params.id },
+                { $set: { state: "deleted" } },
+                { new: true },
+                (e, application) => {
+                    if (e) return res.status(500).json(e);
+                    return res.status(200).json({ application, job });
+                }
+            );
+        }
+    );
 });
 
 // rate a job

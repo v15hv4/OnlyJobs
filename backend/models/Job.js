@@ -71,6 +71,13 @@ const JobSchema = new Schema({
             },
         },
     ],
+    state: {
+        type: String,
+        required: true,
+        trim: true,
+        enum: ["available", "deleted"],
+        default: "available",
+    },
 });
 
 export default model("Job", JobSchema);
