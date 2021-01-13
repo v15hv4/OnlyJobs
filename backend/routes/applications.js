@@ -44,10 +44,15 @@ router.post("/new", async (req, res) => {
 });
 
 router.post("/edit/:id", async (req, res) => {
-    Application.findByIdAndDelete(req.params.id, { $set: req.body }, (e, application) => {
-        if (e) return res.status(500).json(e);
-        return res.status(200).json(application);
-    });
+    Application.findByIdAndDelete(
+        req.params.id,
+        { $set: req.body },
+        { new: true },
+        (e, application) => {
+            if (e) return res.status(500).json(e);
+            return res.status(200).json(application);
+        }
+    );
 });
 
 export default router;
