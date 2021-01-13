@@ -5,8 +5,8 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     Job.find(req.query, (e, jobs) => {
-        if (e) res.status(500).json(e);
-        res.status(200).json(jobs);
+        if (e) return res.status(500).json(e);
+        return res.status(200).json(jobs);
     });
 });
 
@@ -24,8 +24,8 @@ router.post("/new", async (req, res) => {
         rating: req.body.rating,
     });
     newJob.save((e, job) => {
-        if (e) res.status(500).json(e);
-        res.status(200).json(job);
+        if (e) return res.status(500).json(e);
+        return res.status(200).json(job);
     });
 });
 
@@ -34,8 +34,8 @@ router.post("/rate/:id", async (req, res) => {
         req.params.id,
         { $inc: { "rating.value": req.body.rating, "rating.amount": 1 } },
         (e, job) => {
-            if (e) res.status(500).json(e);
-            res.status(200).json(job);
+            if (e) return res.status(500).json(e);
+            return res.status(200).json(job);
         }
     );
 });

@@ -5,8 +5,8 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     Language.find(req.query, (e, languages) => {
-        if (e) res.status(500).json(e);
-        res.status(200).json(languages);
+        if (e) return res.status(500).json(e);
+        return res.status(200).json(languages);
     });
 });
 
@@ -15,8 +15,8 @@ router.post("/new", async (req, res) => {
         name: req.body.name,
     });
     newLanguage.save((e, language) => {
-        if (e) res.status(500).json(e);
-        res.status(200).json(language);
+        if (e) return res.status(500).json(e);
+        return res.status(200).json(language);
     });
 });
 
