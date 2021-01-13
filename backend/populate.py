@@ -116,14 +116,7 @@ async def main():
     applicants = loads((await s.get(f"{host}/api/applicants")).text)
     jobs = loads((await s.get(f"{host}/api/jobs")).text)
     for _ in range(n):
-        data = dumps(
-            {
-                "applicant": choice(applicants),
-                "job": choice(jobs),
-                "SOP": f.text(),
-                "state": choice(["applied", "shortlisted", "accepted", "rejected", "deleted"]),
-            }
-        )
+        data = dumps({"applicant": choice(applicants), "job": choice(jobs), "SOP": f.text()})
         await populate(endpoint, data)
     print("done!")
     # }}}

@@ -27,6 +27,10 @@ const ApplicationSchema = new Schema({
         enum: ["applied", "shortlisted", "accepted", "rejected", "deleted"],
         default: "applied",
     },
+    join_date: {
+        type: Date,
+        default: null,
+    },
 });
 
 export default model("Application", ApplicationSchema);

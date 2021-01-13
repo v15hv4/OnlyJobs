@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Application from "../models/Application";
+import Job from "../models/Job";
 
 const router = Router();
 
@@ -13,36 +14,53 @@ router.get("/", async (req, res) => {
 
 // create new application
 router.post("/new", async (req, res) => {
-    Application.find({ applicant: req.body.applicant }, (e, applications) => {
-        if (e) return res.status(500).json(e);
-
-        const openApplications = applications.filter((a) =>
-            ["applied", "shortlisted"].includes(a.state)
-        );
-
-        if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
-            return res.status(500).json({
-                message: "Applicant has already applied to this job!",
-            });
-        }
-
-        if (openApplications.length > 10) {
-            return res.status(500).json({
-                message: "Applicant may not have more than 10 open applications!",
-            });
-        }
-
-        const newApplication = new Application({
-            applicant: req.body.applicant,
-            job: req.body.job,
-            SOP: req.body.SOP,
-            state: req.body.state,
-        });
-        newApplication.save((e, application) => {
+    Application.find(
+        { $or: [{ state: "applied" }, { state: "shortlisted" }] },
+        (e, applications) => {
             if (e) return res.status(500).json(e);
-            return res.status(200).json(application);
-        });
-    });
+
+            const openApplications = applications.filter((a) =>
+                a.applicant.equals(req.body.applicant)
+            );
+
+            // check whether applicant has already applied
+            if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
+                return res.status(500).json({
+                    message: "Applicant has already applied to this job!",
+                });
+            }
+
+            // check whether applicant has exceeded limit
+            if (openApplications.length > 10) {
+                return res.status(500).json({
+                    message: "Applicant may not have more than 10 open applications!",
+                });
+            }
+
+            Job.findOne({ _id: req.body.job }, (e, job) => {
+                if (e) return res.status(500).json(e);
+
+                const jobApplications = applications.filter((a) => a.job.equals(req.body.job));
+
+                // check whether job has reached max number of applications
+                if (job.max_applications <= jobApplications.length) {
+                    return res.status(500).json({
+                        message: "Job has reached application limit!",
+                    });
+                }
+
+                const newApplication = new Application({
+                    applicant: req.body.applicant,
+                    job: req.body.job,
+                    SOP: req.body.SOP,
+                });
+                newApplication.save((e, application) => {
+                    if (e) return res.status(500).json(e);
+                    return res.status(200).json(application);
+                });
+            });
+        }
+    );
 });
 
 // edit application details
@@ -63,6 +81,19 @@ router.post("/delete/:id", async (req, res) => {
     Application.findByIdAndUpdate(
         req.params.id,
         { $set: { state: "deleted" } },
+        { new: true },
+        (e, application) => {
+            if (e) return res.status(500).json(e);
+            return res.status(200).json(application);
+        }
+    );
+});
+
+// accept application
+router.post("/accept/:id", async (req, res) => {
+    Application.findByIdAndUpdate(
+        req.params.id,
+        { $set: { state: "accepted", join_date: new Date() } },
         { new: true },
         (e, application) => {
             if (e) return res.status(500).json(e);
