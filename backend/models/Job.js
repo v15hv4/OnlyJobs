@@ -75,7 +75,7 @@ const JobSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        enum: ["available", "deleted"],
+        enum: ["available", "expired", "deleted"],
         default: "available",
     },
 });

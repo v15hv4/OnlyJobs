@@ -6,10 +6,20 @@ const router = Router();
 
 // retrieve jobs
 router.get("/", async (req, res) => {
-    Job.find(req.query, (e, jobs) => {
-        if (e) return res.status(500).json(e);
-        return res.status(200).json(jobs);
-    });
+    // "expire" jobs whose deadlines have passed
+    Job.updateMany(
+        { deadline: { $lt: new Date() }, state: "available" },
+        { $set: { state: "expired" } },
+        { new: true },
+        (e) => {
+            if (e) return res.status(500).json(e);
+            // return jobs filtered by query
+            Job.find(req.query, (e, jobs) => {
+                if (e) return res.status(500).json(e);
+                return res.status(200).json(jobs);
+            });
+        }
+    );
 });
 
 // add a new job

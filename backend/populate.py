@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from requests_async import Session
 from asyncio import get_event_loop
 from random import randint, choice
@@ -97,7 +98,7 @@ async def main():
                 "recruiter": choice(recruiters),
                 "max_applications": randint(1, 20),
                 "max_positions": randint(1, 10),
-                "deadline": f.date_this_year(before_today=False, after_today=True).isoformat(),
+                "deadline": (datetime.now() + timedelta(minutes=1)).isoformat(),
                 "skillset": list(set([choice(languages)["_id"] for i in range(randint(1, 5))])),
                 "type": choice(["full_time", "part_time", "work_from_home"]),
                 "duration": randint(0, 6),
