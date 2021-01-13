@@ -1,11 +1,47 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
+import passport from "passport";
+import JWT from "jsonwebtoken";
+import dotenv from "dotenv";
+
 import User from "../models/User";
 import Applicant from "../models/Applicant";
 import Recruiter from "../models/Recruiter";
 
+dotenv.config();
+
 const router = Router();
 
+const signToken = (pk) => {
+    return JWT.sign({ iss: "OnlyJobs", sub: pk }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
+
+// authenticate & log the user in
+router.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
+    if (req.isAuthenticated()) {
+        const { _id, name, details } = req.user;
+        const token = signToken(_id);
+        res.cookie("auth_token", token, { httpOnly: true, sameSite: true });
+        res.status(200).json({
+            isAuthenticated: true,
+            user: { id: _id, name: name, role: details.toLowerCase() },
+        });
+    } else {
+        res.send("bruh");
+    }
+});
+
+// log the user out & clear cookie
+router.get("/logout", passport.authenticate("jwt", { session: false }), (req, res) => {
+    res.clearCookie("auth_token")
+        .status(200)
+        .json({
+            isAuthenticated: false,
+            user: { id: null, name: "", role: "" },
+        });
+});
+
+// register a new user
 router.post("/register", async (req, res) => {
     User.find({ email: req.body.email }, async (e, existing) => {
         // check whether email already in use
@@ -34,7 +70,7 @@ router.post("/register", async (req, res) => {
                 case "recruiter":
                     const newRecruiter = new Recruiter({
                         email: req.body.email,
-                        password: req.body.password,
+                        password: passwordHash,
                         name: req.body.name,
                         contact: req.body.contact,
                         bio: req.body.bio,

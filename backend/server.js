@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -19,6 +20,7 @@ const mongo_uri = process.env.MONGO_URI;
 
 // middleware {{{
 app.use(express.json());
+app.use(cookieParser());
 // }}}
 
 // routes {{{
