@@ -32,11 +32,23 @@ router.post("/new", async (req, res) => {
 router.post("/rate/:id", async (req, res) => {
     Job.findByIdAndUpdate(
         req.params.id,
-        { $push: { ratings: { value: req.body.rating, recruiter: req.body.applicant } } },
+        {
+            $pull: { ratings: { recruiter: req.body.applicant } },
+        },
         { new: true },
-        (e, job) => {
+        (e) => {
             if (e) return res.status(500).json(e);
-            return res.status(200).json(job);
+            Job.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $push: { ratings: { value: req.body.rating, applicant: req.body.applicant } },
+                },
+                { new: true },
+                (e, job) => {
+                    if (e) return res.status(500).json(e);
+                    return res.status(200).json(job);
+                }
+            );
         }
     );
 });
