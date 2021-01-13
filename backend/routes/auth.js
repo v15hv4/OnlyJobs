@@ -32,7 +32,7 @@ router.post("/login", passport.authenticate("local", { session: false }), (req, 
 });
 
 // log the user out & clear cookie
-router.get("/logout", passport.authenticate("jwt", { session: false }), (req, res) => {
+router.get("/logout", passport.authenticate("jwt", { session: false }), (_req, res) => {
     res.clearCookie("auth_token")
         .status(200)
         .json({
@@ -41,7 +41,7 @@ router.get("/logout", passport.authenticate("jwt", { session: false }), (req, re
         });
 });
 
-// register a new user
+// register a new user based on role
 router.post("/register", async (req, res) => {
     User.find({ email: req.body.email }, async (e, existing) => {
         // check whether email already in use

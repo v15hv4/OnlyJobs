@@ -3,6 +3,7 @@ import Recruiter from "../models/Recruiter";
 
 const router = Router();
 
+// retrieve recruiters
 router.get("/", async (req, res) => {
     Recruiter.find(req.query, (e, recruiters) => {
         if (e) return res.status(500).json(e);
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
     });
 });
 
+// edit recruiter details
 router.post("/edit/:id", async (req, res) => {
     Recruiter.findByIdAndUpdate(
         req.params.id,

@@ -3,6 +3,7 @@ import Application from "../models/Application";
 
 const router = Router();
 
+// retrieve applications
 router.get("/", async (req, res) => {
     Application.find(req.query, (e, applications) => {
         if (e) return res.status(500).json(e);
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
     });
 });
 
+// create new application
 router.post("/new", async (req, res) => {
     Application.find({ applicant: req.body.applicant }, (e, applications) => {
         if (e) return res.status(500).json(e);
@@ -43,6 +45,7 @@ router.post("/new", async (req, res) => {
     });
 });
 
+// edit application details
 router.post("/edit/:id", async (req, res) => {
     Application.findByIdAndDelete(
         req.params.id,

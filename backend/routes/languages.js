@@ -3,6 +3,7 @@ import Language from "../models/Language";
 
 const router = Router();
 
+// retrieve languages
 router.get("/", async (req, res) => {
     Language.find(req.query, (e, languages) => {
         if (e) return res.status(500).json(e);
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
     });
 });
 
+// add a new language
 router.post("/new", async (req, res) => {
     const newLanguage = new Language({
         name: req.body.name,

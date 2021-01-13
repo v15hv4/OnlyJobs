@@ -3,6 +3,7 @@ import Applicant from "../models/Applicant";
 
 const router = Router();
 
+// retrieve applcants
 router.get("/", async (req, res) => {
     Applicant.find(req.query, (e, applicants) => {
         if (e) return res.status(500).json(e);
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
     }).populate("skills");
 });
 
+// edit applicant details
 router.post("/edit/:id", async (req, res) => {
     Applicant.findByIdAndUpdate(
         req.params.id,
@@ -22,6 +24,7 @@ router.post("/edit/:id", async (req, res) => {
     );
 });
 
+// rate an applicant
 router.post("/rate/:id", async (req, res) => {
     Applicant.findByIdAndUpdate(
         req.params.id,

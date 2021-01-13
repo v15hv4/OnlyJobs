@@ -3,6 +3,7 @@ import Job from "../models/Job";
 
 const router = Router();
 
+// retrieve jobs
 router.get("/", async (req, res) => {
     Job.find(req.query, (e, jobs) => {
         if (e) return res.status(500).json(e);
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
     });
 });
 
+// add a new job
 router.post("/new", async (req, res) => {
     const newJob = new Job({
         title: req.body.title,
@@ -29,6 +31,7 @@ router.post("/new", async (req, res) => {
     });
 });
 
+// rate a job
 router.post("/rate/:id", async (req, res) => {
     Job.findByIdAndUpdate(
         req.params.id,
