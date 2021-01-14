@@ -5,23 +5,26 @@ const router = Router();
 
 // retrieve recruiters
 router.get("/", async (req, res) => {
-    Recruiter.find(req.query, (e, recruiters) => {
-        if (e) return res.status(500).json(e);
+    try {
+        const recruiters = await Recruiter.find(req.query);
         return res.status(200).json(recruiters);
-    });
+    } catch (e) {
+        return res.status(500).json(e);
+    }
 });
 
 // edit recruiter details
 router.post("/edit/:id", async (req, res) => {
-    Recruiter.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true },
-        (e, recruiter) => {
-            if (e) return res.status(500).json(e);
-            return res.status(200).json(recruiter);
-        }
-    );
+    try {
+        const recruiter = await Recruiter.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body },
+            { new: true }
+        );
+        return res.status(200).json(recruiter);
+    } catch (e) {
+        return res.status(500).json(e);
+    }
 });
 
 export default router;
