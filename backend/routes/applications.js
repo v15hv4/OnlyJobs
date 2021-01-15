@@ -7,7 +7,9 @@ const router = Router();
 // retrieve applications
 router.get("/", async (req, res) => {
     try {
-        const applications = await Application.find(req.query);
+        const applications = await Application.find(req.query)
+            .populate("applicant")
+            .populate("job");
         return res.status(200).json(applications);
     } catch (e) {
         return res.status(500).json(e);

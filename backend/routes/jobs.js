@@ -7,7 +7,7 @@ const router = Router();
 // retrieve jobs
 router.get("/", async (req, res) => {
     try {
-        const jobs = await Job.find(req.query);
+        const jobs = await Job.find(req.query).populate("skillset");
         return res.status(200).json(jobs);
     } catch (e) {
         return res.status(500).json(e);
