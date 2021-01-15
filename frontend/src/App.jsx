@@ -30,9 +30,9 @@ const App = () => {
                 <Route exact path="/">
                     {!session.user.role ? <Auth.Login /> : <Redirect to="/dashboard" />}
                 </Route>
-                {/* <Route exact path="/register"> */}
-                {/*     {!session.user.role ? <Auth.Register /> : <Redirect to="/dashboard" />} */}
-                {/* </Route> */}
+                <Route exact path="/signup">
+                    {!session.user.role ? <Auth.Signup /> : <Redirect to="/dashboard" />}
+                </Route>
 
                 {/* conditionally render dashboard */}
                 <Route exact path="/dashboard">
