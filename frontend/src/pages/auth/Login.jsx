@@ -1,20 +1,24 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Row, Col, Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
+import { Alert, Button, Row, Col, Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
+import { SessionContext } from "App";
 
 import PageContainer from "components/PageContainer";
 
 const Login = () => {
+    const { session, handlers } = useContext(SessionContext);
     const { register, handleSubmit, errors } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        await handlers.login(data);
     };
 
     return (
         <PageContainer>
             <Row className="h-100">
                 <Col
-                    md={8}
+                    lg={7}
+                    xl={8}
                     className="d-flex flex-column justify-content-center align-items-center"
                 >
                     <img src="/onlyjobs_full.svg" alt="OnlyJobs" className="w-75" />
@@ -24,6 +28,14 @@ const Login = () => {
                 </Col>
                 <Col className="d-flex justify-content-center align-items-center bg-dark text-light">
                     <Form onSubmit={handleSubmit(onSubmit)} className="w-75">
+                        {session.error ? (
+                            <Alert
+                                color="danger"
+                                className="mb-5 fw-700 bg-danger text-light border-0"
+                            >
+                                Error: {session.error.data}
+                            </Alert>
+                        ) : null}
                         <div className="h1 fw-700 mb-5"> Log in </div>
                         <FormGroup>
                             <Label for="email" className="fw-500 mb-1">
