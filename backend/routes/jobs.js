@@ -7,14 +7,6 @@ const router = Router();
 // retrieve jobs
 router.get("/", async (req, res) => {
     try {
-        // "expire" jobs whose deadlines have passed
-        await Job.updateMany(
-            { deadline: { $lt: new Date() }, state: "available" },
-            { $set: { state: "expired" } },
-            { new: true }
-        );
-
-        // return jobs filtered by query
         const jobs = await Job.find(req.query);
         return res.status(200).json(jobs);
     } catch (e) {

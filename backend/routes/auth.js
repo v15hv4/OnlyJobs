@@ -43,51 +43,49 @@ router.get("/logout", passport.authenticate("jwt", { session: false }), (_req, r
 
 // register a new user based on role
 router.post("/register", async (req, res) => {
-    User.find({ email: req.body.email }, async (e, existing) => {
+    try {
         // check whether email already in use
-        if (e) return res.status(500).json(e);
+        const existing = User.find({ email: req.body.email });
         if (existing.length > 0)
             return res.status(500).json({ message: "Error! Email already in use." });
 
-        try {
-            // hash & store password
-            const passwordHash = await bcrypt.hash(req.body.password, 10);
-            switch (req.body.role) {
-                case "applicant":
-                    const newApplicant = new Applicant({
-                        email: req.body.email,
-                        password: passwordHash,
-                        name: req.body.name,
-                        education: req.body.education,
-                        skills: req.body.skills,
-                    });
-                    newApplicant.save((e, applicant) => {
-                        if (e) return res.status(500).json(e);
-                        return res.status(200).json(applicant);
-                    });
-                    break;
+        // hash & store password
+        const passwordHash = await bcrypt.hash(req.body.password, 10);
+        switch (req.body.role) {
+            case "applicant":
+                const newApplicant = new Applicant({
+                    email: req.body.email,
+                    password: passwordHash,
+                    name: req.body.name,
+                    education: req.body.education,
+                    skills: req.body.skills,
+                });
+                newApplicant.save((e, applicant) => {
+                    if (e) return res.status(500).json(e);
+                    return res.status(200).json(applicant);
+                });
+                break;
 
-                case "recruiter":
-                    const newRecruiter = new Recruiter({
-                        email: req.body.email,
-                        password: passwordHash,
-                        name: req.body.name,
-                        contact: req.body.contact,
-                        bio: req.body.bio,
-                    });
-                    newRecruiter.save((e, recruiter) => {
-                        if (e) return res.status(500).json(e);
-                        return res.status(200).json(recruiter);
-                    });
-                    break;
+            case "recruiter":
+                const newRecruiter = new Recruiter({
+                    email: req.body.email,
+                    password: passwordHash,
+                    name: req.body.name,
+                    contact: req.body.contact,
+                    bio: req.body.bio,
+                });
+                newRecruiter.save((e, recruiter) => {
+                    if (e) return res.status(500).json(e);
+                    return res.status(200).json(recruiter);
+                });
+                break;
 
-                default:
-                    return res.status(500).json({ message: "Invalid role!" });
-            }
-        } catch (e) {
-            return res.status(500).json(e);
+            default:
+                return res.status(500).json({ message: "Invalid role!" });
         }
-    });
+    } catch (e) {
+        return res.status(500).json(e);
+    }
 });
 
 export default router;

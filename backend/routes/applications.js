@@ -21,9 +21,8 @@ router.post("/new", async (req, res) => {
             $or: [{ state: "applied" }, { state: "shortlisted" }],
         });
 
-        const openApplications = applications.filter((a) => a.applicant.equals(req.body.applicant));
-
         // check whether applicant has already applied
+        const openApplications = applications.filter((a) => a.applicant.equals(req.body.applicant));
         if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
             return res.status(500).json({
                 message: "Applicant has already applied to this job!",
@@ -37,11 +36,9 @@ router.post("/new", async (req, res) => {
             });
         }
 
-        const job = await Job.findOne({ _id: req.body.job });
-
-        const jobApplications = applications.filter((a) => a.job.equals(req.body.job));
-
         // check whether job has reached max number of applications
+        const job = await Job.findOne({ _id: req.body.job });
+        const jobApplications = applications.filter((a) => a.job.equals(req.body.job));
         if (job.max_applications <= jobApplications.length) {
             return res.status(500).json({
                 message: "Job has reached application limit!",
@@ -99,20 +96,13 @@ router.post("/accept/:id", async (req, res) => {
             { new: true }
         );
 
-        const job = await Job.findOne({ _id: application.job });
-
         // check whether job has filled all positions
-        if (job.state === "filled") {
+        const job = await Job.findOne({ _id: application.job });
+        const jobApplications = await Application.find({ job: application.job, state: "accepted" });
+        if (job.max_positions <= jobApplications.length) {
             return res.status(500).json({
-                message: "Job has reached application limit!",
+                message: "Job has reached position limit!",
             });
-        }
-
-        const applications = Application.find({ job: application.job, state: "accepted" });
-
-        // update job state if filled by this application
-        if (job.max_positions <= applications.length) {
-            await Job.findByIdAndUpdate(application.job, { $set: { state: "filled" } });
         }
 
         return res.status(200).json(application);
