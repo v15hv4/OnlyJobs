@@ -1,17 +1,28 @@
-import { Controller } from "react-hook-form";
-import { Button, FormGroup, Label, Input, FormFeedback } from "reactstrap";
+import { useRef } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { selectStyles } from "./styles";
 
 import Select from "react-select";
 
-const Common = ({ register, errors, control }) => {
+const Common = ({ addFormData, setCurrent }) => {
+    const { register, handleSubmit, errors, control, watch } = useForm();
+
+    const password = useRef({});
+    password.current = watch("password", "");
+
     const roles = [
         { value: "applicant", label: "Applicant" },
         { value: "recruiter", label: "Recruiter" },
     ];
 
+    const onSubmit = (data) => {
+        addFormData(data);
+        setCurrent(data.role.value);
+    };
+
     return (
-        <>
+        <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
                 <Label for="name" className="fw-500 mb-1">
                     Name
@@ -59,7 +70,10 @@ const Common = ({ register, errors, control }) => {
                     invalid={errors.confirmpassword}
                     type="password"
                     name="confirmpassword"
-                    innerRef={register({ required: true })}
+                    innerRef={register({
+                        required: true,
+                        validate: (v) => v === password.current,
+                    })}
                     className="bg-secondary text-light"
                 />
                 <FormFeedback className="fw-700"> Passwords do not match! </FormFeedback>
@@ -81,7 +95,7 @@ const Common = ({ register, errors, control }) => {
             <div className="w-100 d-flex justify-content-between align-items-center mt-2">
                 <Button color="primary w-100 mt-4 fw-700">NEXT &gt;</Button>
             </div>
-        </>
+        </Form>
     );
 };
 

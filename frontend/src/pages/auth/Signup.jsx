@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Alert, Button, Form } from "reactstrap";
+import { useContext, useState, useEffect } from "react";
+import { Alert, Button } from "reactstrap";
 import { SessionContext } from "App";
 
 import AuthContainer from "components/AuthContainer";
@@ -9,28 +8,37 @@ import Common from "./components/CommonForm";
 
 const Signup = () => {
     const { session, handlers } = useContext(SessionContext);
-    const { register, handleSubmit, errors, control } = useForm();
 
     const [current, setCurrent] = useState("common");
-    const [currentData, setCurrentData] = useState({});
+    const [formData, setFormData] = useState({});
+
+    const addFormData = (data) => setFormData({ ...formData, ...data });
+
+    useEffect(() => console.log(formData), [formData]);
+
+    const formProps = {
+        formData,
+        addFormData,
+        setCurrent,
+    };
 
     const pages = {
-        common: <Common register={register} errors={errors} control={control} />,
-        applicant: <Applicant register={register} errors={errors} control={control} />,
+        common: <Common {...formProps} />,
+        applicant: <Applicant {...formProps} />,
         recruiter: <h1> recruiter </h1>,
     };
 
-    const onSubmit = async (data) => {
-        console.log(data);
-        setCurrentData({ ...currentData, data });
+    // const onSubmit = async (data) => {
+    //     console.log(data);
+    //     setCurrentData({ ...currentData, data });
 
-        if ("role" in data) setCurrent(data.role.value);
-        else await handlers.login(data);
-    };
+    //     if ("role" in data) setCurrent(data.role.value);
+    //     else await handlers.login(data);
+    // };
 
     return (
         <AuthContainer>
-            <Form onSubmit={handleSubmit(onSubmit)} className="w-75">
+            <div className="d-flex flex-column w-75">
                 {session.error ? (
                     <Alert color="danger" className="mb-5 fw-700 bg-danger text-light border-0">
                         Error: {session.error.data}
@@ -44,7 +52,7 @@ const Signup = () => {
                         LOGIN
                     </Button>
                 </div>
-            </Form>
+            </div>
         </AuthContainer>
     );
 };
