@@ -1,4 +1,4 @@
-import { useEffect, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ManageSession } from "api/session";
 
@@ -10,32 +10,50 @@ export const SessionContext = createContext();
 
 const App = () => {
     const [session, handlers] = ManageSession();
-    useEffect(() => handlers.session(), []); // eslint-disable-line
+    const [loading, setLoading] = useState(true);
 
-    console.log(session);
+    useEffect(() => {
+        const fetchSession = async () => {
+            await handlers.session();
+            setLoading(false);
+        };
+        fetchSession();
+    }, []); // eslint-disable-line
 
+    console.log(session.user.role);
+
+    if (loading) return null; // TODO: loading indicator / page
     return (
         <SessionContext.Provider value={{ session, handlers }}>
             <Switch>
                 {/* auth routes */}
                 <Route exact path="/">
-                    <Auth.Login />
+                    {!session.user.role ? <Auth.Login /> : <Redirect to="/dashboard" />}
+                </Route>
+                {/* <Route exact path="/register"> */}
+                {/*     {!session.user.role ? <Auth.Register /> : <Redirect to="/dashboard" />} */}
+                {/* </Route> */}
+
+                {/* conditionally render dashboard */}
+                <Route exact path="/dashboard">
+                    {session.user.role === "applicant" ? (
+                        <Applicant.Dashboard />
+                    ) : session.user.role === "recruiter" ? (
+                        <Recruiter.Dashboard />
+                    ) : (
+                        <Redirect to="/" />
+                    )}
                 </Route>
 
-                {/* applicant routes */}
-                <Route exact path="/applicant">
-                    <Redirect to="/applicant/dashboard" />
-                </Route>
-                <Route path="/applicant/dashboard">
-                    <Applicant.Dashboard />
-                </Route>
-
-                {/* recruiter routes */}
-                <Route exact path="/recruiter">
-                    <Redirect to="/recruiter/dashboard" />
-                </Route>
-                <Route path="/recruiter/dashboard">
-                    <Recruiter.Dashboard />
+                {/* conditionally render applications */}
+                <Route exact path="/applications">
+                    {session.user.role === "applicant" ? (
+                        <Applicant.Applications />
+                    ) : session.user.role === "recruiter" ? (
+                        <Recruiter.Applications />
+                    ) : (
+                        <Redirect to="/" />
+                    )}
                 </Route>
             </Switch>
         </SessionContext.Provider>
