@@ -3,6 +3,7 @@ import { Alert, Button } from "reactstrap";
 import { SessionContext } from "App";
 
 import AuthContainer from "components/AuthContainer";
+import Recruiter from "./components/RecruiterForm";
 import Applicant from "./components/ApplicantForm";
 import Common from "./components/CommonForm";
 
@@ -25,7 +26,7 @@ const Signup = () => {
     const pages = {
         common: <Common {...formProps} />,
         applicant: <Applicant {...formProps} />,
-        recruiter: <h1> recruiter </h1>,
+        recruiter: <Recruiter {...formProps} />,
     };
 
     // const onSubmit = async (data) => {

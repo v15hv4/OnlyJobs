@@ -17,7 +17,7 @@ const Common = ({ addFormData, setCurrent }) => {
     ];
 
     const onSubmit = (data) => {
-        addFormData(data);
+        addFormData({ ...data, role: data.role.value });
         setCurrent(data.role.value);
     };
 

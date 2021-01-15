@@ -5,7 +5,7 @@ import { selectStyles } from "./styles";
 import Select from "react-select";
 
 const Applicant = ({ formData, addFormData }) => {
-    const { register, handleSubmit, errors, control, watch } = useForm();
+    const { register, handleSubmit, errors, control } = useForm();
 
     // TODO: fetch from API call
     const skills = [
