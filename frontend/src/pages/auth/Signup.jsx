@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Alert, Button } from "reactstrap";
 import { SessionContext } from "App";
 
@@ -49,7 +50,13 @@ const Signup = () => {
                 {pages[current]}
                 <div className="w-100 d-flex justify-content-center align-items-center mt-5">
                     Existing member?
-                    <Button type="button" outline color="light fw-700 border-0 mx-2 px-2">
+                    <Button
+                        tag={Link}
+                        to="/"
+                        type="button"
+                        outline
+                        color="light fw-700 border-0 mx-2 px-2"
+                    >
                         LOGIN
                     </Button>
                 </div>
