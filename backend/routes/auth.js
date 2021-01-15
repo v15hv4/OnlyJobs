@@ -4,6 +4,7 @@ import passport from "passport";
 import JWT from "jsonwebtoken";
 import dotenv from "dotenv";
 
+import passportConfig from "../passport";
 import User from "../models/User";
 import Applicant from "../models/Applicant";
 import Recruiter from "../models/Recruiter";
@@ -39,6 +40,19 @@ router.get("/logout", passport.authenticate("jwt", { session: false }), (_req, r
             isAuthenticated: false,
             user: { id: null, name: "", role: "" },
         });
+});
+
+// return authenticated user's session details
+router.get("/session", passport.authenticate("jwt", { session: false }), (req, res) => {
+    if (req.isAuthenticated()) {
+        const { _id, name, details } = req.user;
+        res.status(200).json({
+            isAuthenticated: true,
+            user: { id: _id, name: name, role: details.toLowerCase() },
+        });
+    } else {
+        res.status(500).send("bruh");
+    }
 });
 
 // register a new user based on role
