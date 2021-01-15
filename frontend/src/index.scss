@@ -12,3 +12,23 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+// utility classes {{{
+.fw-400 {
+    font-weight: 400;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+// }}}
+
+// bootstrap overrides {{{
+.form-control {
+    border: none !important;
+}
+// }}}
