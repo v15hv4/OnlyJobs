@@ -38,6 +38,17 @@ router.post("/new", async (req, res) => {
             });
         }
 
+        // check whether applicant has already been accepted to another job
+        const acceptedApplication = await Application.findOne({
+            applicant: req.body.applicant,
+            state: "accepted",
+        });
+        if (acceptedApplication) {
+            return res.status(500).json({
+                message: "Applicant has already been accepted into a job!",
+            });
+        }
+
         // check whether job has reached max number of applications
         const job = await Job.findOne({ _id: req.body.job });
         const jobApplications = applications.filter((a) => a.job.equals(req.body.job));
@@ -101,11 +112,17 @@ router.post("/accept/:id", async (req, res) => {
         // check whether job has filled all positions
         const job = await Job.findOne({ _id: application.job });
         const jobApplications = await Application.find({ job: application.job, state: "accepted" });
-        if (job.max_positions <= jobApplications.length) {
+        if (job.max_positions < jobApplications.length) {
             return res.status(500).json({
                 message: "Job has reached position limit!",
             });
         }
+
+        // reject all other applications of the applicant
+        await Application.updateMany(
+            { applicant: application.applicant, _id: { $ne: application._id } },
+            { $set: { state: "rejected" } }
+        );
 
         return res.status(200).json(application);
     } catch (e) {
