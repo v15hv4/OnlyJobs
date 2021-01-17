@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { selectStyles } from "./styles";
@@ -20,6 +20,10 @@ const Applicant = ({ formData, addFormData }) => {
         else return skills.map((s) => ({ value: s.name, label: s.name }));
     };
 
+    const [education, setEducation] = useState([]);
+
+    const addEducation = () => setEducation([...education, EducationInputGroup]);
+
     const onSubmit = (data) => {
         addFormData(data);
         // TODO: don't add to form data, instead make an api call
@@ -33,9 +37,19 @@ const Applicant = ({ formData, addFormData }) => {
                 <Label for="education" className="fw-500 mb-1">
                     Education
                 </Label>
-                <EducationInputGroup register={register} errors={errors} />
+                {education.map((E, idx) => (
+                    <E idx={idx} />
+                ))}
                 <FormFeedback className="fw-700"> Invalid education! </FormFeedback>
             </FormGroup>
+            <Button
+                outline
+                color="secondary"
+                onClick={addEducation}
+                className="w-100 mb-4 text-light"
+            >
+                + ADD
+            </Button>
             <FormGroup>
                 <Label for="skills" className="fw-500 mb-1">
                     Skills

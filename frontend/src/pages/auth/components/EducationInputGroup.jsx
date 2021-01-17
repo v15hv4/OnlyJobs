@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import { Button, Input, FormFeedback, Row, Col } from "reactstrap";
+import { Input, FormFeedback, Row, Col } from "reactstrap";
 import { SignupFormContext } from "../Signup";
 
 const EducationInputGroup = () => {
@@ -17,11 +17,11 @@ const EducationInputGroup = () => {
                         name="education_name"
                         innerRef={register({ required: true })}
                         className="bg-secondary text-light"
-                        placeholder="Name"
+                        placeholder="Institution Name"
                     />
                 </Col>
             </Row>
-            <Row form>
+            <Row form className="mb-3">
                 <Col form>
                     <Input
                         invalid={errors.education_from}
