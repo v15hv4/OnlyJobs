@@ -1,4 +1,5 @@
-import { useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Alert, Button } from "reactstrap";
 import { SessionContext } from "App";
@@ -8,7 +9,10 @@ import Recruiter from "./components/RecruiterForm";
 import Applicant from "./components/ApplicantForm";
 import Common from "./components/CommonForm";
 
+export const SignupFormContext = createContext();
+
 const Signup = () => {
+    const { register, handleSubmit, errors, control, watch } = useForm();
     const { session, handlers } = useContext(SessionContext);
 
     const [current, setCurrent] = useState("common");
@@ -18,16 +22,10 @@ const Signup = () => {
 
     useEffect(() => console.log(formData), [formData]);
 
-    const formProps = {
-        formData,
-        addFormData,
-        setCurrent,
-    };
-
     const pages = {
-        common: <Common {...formProps} />,
-        applicant: <Applicant {...formProps} />,
-        recruiter: <Recruiter {...formProps} />,
+        common: <Common />,
+        applicant: <Applicant />,
+        recruiter: <Recruiter />,
     };
 
     // const onSubmit = async (data) => {
@@ -47,7 +45,20 @@ const Signup = () => {
                     </Alert>
                 ) : null}
                 <div className="h1 fw-700 mb-5"> Sign Up </div>
-                {pages[current]}
+                <SignupFormContext.Provider
+                    value={{
+                        register,
+                        handleSubmit,
+                        errors,
+                        control,
+                        watch,
+                        formData,
+                        addFormData,
+                        setCurrent,
+                    }}
+                >
+                    {pages[current]}
+                </SignupFormContext.Provider>
                 <div className="w-100 d-flex justify-content-center align-items-center mt-5">
                     Existing member?
                     <Button

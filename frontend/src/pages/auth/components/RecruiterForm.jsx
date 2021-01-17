@@ -1,9 +1,10 @@
-import { useForm } from "react-hook-form";
+import { useContext } from "react";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { phone_number, word_limit } from "./validators";
+import { SignupFormContext } from "../Signup";
 
-const Recruiter = ({ formData, addFormData }) => {
-    const { register, handleSubmit, errors } = useForm();
+const Recruiter = () => {
+    const { register, handleSubmit, errors, formData, addFormData } = useContext(SignupFormContext);
 
     const onSubmit = (data) => {
         addFormData(data);

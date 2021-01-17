@@ -1,12 +1,16 @@
-import { useRef } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useRef, useContext } from "react";
+import { Controller } from "react-hook-form";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
+
+import { SignupFormContext } from "../Signup";
 import { selectStyles } from "./styles";
 
 import Select from "react-select";
 
-const Common = ({ addFormData, setCurrent }) => {
-    const { register, handleSubmit, errors, control, watch } = useForm();
+const Common = () => {
+    const { register, handleSubmit, errors, control, watch, addFormData, setCurrent } = useContext(
+        SignupFormContext
+    );
 
     const password = useRef({});
     password.current = watch("password", "");

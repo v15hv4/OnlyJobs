@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { selectStyles } from "./styles";
@@ -6,7 +7,7 @@ import { languages } from "api/endpoints";
 import { HandleGET } from "api/methods";
 
 import Select from "react-select";
-import { useEffect } from "react";
+import EducationInputGroup from "./EducationInputGroup";
 
 const Applicant = ({ formData, addFormData }) => {
     const { register, handleSubmit, errors, control } = useForm();
@@ -32,13 +33,7 @@ const Applicant = ({ formData, addFormData }) => {
                 <Label for="education" className="fw-500 mb-1">
                     Education
                 </Label>
-                <Input
-                    invalid={errors.education}
-                    type="education"
-                    name="education"
-                    innerRef={register({ required: true })}
-                    className="bg-secondary text-light"
-                />
+                <EducationInputGroup register={register} errors={errors} />
                 <FormFeedback className="fw-700"> Invalid education! </FormFeedback>
             </FormGroup>
             <FormGroup>
