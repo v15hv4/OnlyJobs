@@ -2,18 +2,22 @@ import { useForm, Controller } from "react-hook-form";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { selectStyles } from "./styles";
 
+import { languages } from "api/endpoints";
+import { HandleGET } from "api/methods";
+
 import Select from "react-select";
+import { useEffect } from "react";
 
 const Applicant = ({ formData, addFormData }) => {
     const { register, handleSubmit, errors, control } = useForm();
+    const [{ loading, data: skills, error }, getSkills] = HandleGET(languages.VIEW);
+    useEffect(() => getSkills(), []); // eslint-disable-line
 
-    // TODO: fetch from API call
-    const skills = [
-        { value: "Python", label: "Python" },
-        { value: "NodeJS", label: "NodeJS" },
-        { value: "C++", label: "C++" },
-        { value: "Golang", label: "Golang" },
-    ];
+    const formattedSkills = () => {
+        if (loading) return [{ value: "loading", error: "Loading..." }];
+        else if (error) return [{ value: "error", error: "Error loading skills!" }];
+        else return skills.map((s) => ({ value: s.name, label: s.name }));
+    };
 
     const onSubmit = (data) => {
         addFormData(data);
@@ -43,7 +47,7 @@ const Applicant = ({ formData, addFormData }) => {
                 </Label>
                 <Controller
                     name="skills"
-                    options={skills}
+                    options={formattedSkills()}
                     styles={selectStyles}
                     control={control}
                     as={Select}
