@@ -50,7 +50,6 @@ export const HandlePOST = (endpoint) => {
                 const res = await axios.post(endpoint, data, { headers });
                 dispatch({ type: "SUCCESS", response: res.data });
             } catch (e) {
-                console.log(e.response.data.message);
                 dispatch({ type: "ERROR", response: e.response });
             }
         },

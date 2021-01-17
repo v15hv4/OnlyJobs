@@ -44,10 +44,8 @@ const EducationInputGroup = ({ idx }) => {
                         name={`education-${idx}-end_year`}
                         innerRef={register({
                             required: false,
-                            validate: (v) => {
-                                console.log(v, startYear.current);
-                                return v ? parseInt(v) >= parseInt(startYear.current) : true;
-                            },
+                            validate: (v) =>
+                                v ? parseInt(v) >= parseInt(startYear.current) : true,
                         })}
                         className="bg-secondary text-light"
                         placeholder="End year (optional)"

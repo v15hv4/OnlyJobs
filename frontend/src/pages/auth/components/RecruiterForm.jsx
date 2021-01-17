@@ -1,16 +1,29 @@
 import { useContext } from "react";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
-import { phone_number, word_limit } from "./validators";
+
+import { SessionContext } from "App";
 import { SignupFormContext } from "../Signup";
+import { phone_number, word_limit } from "./validators";
+
+import { auth } from "api/endpoints";
+import { HandlePOST } from "api/methods";
 
 const Recruiter = () => {
-    const { register, handleSubmit, errors, formData, addFormData } = useContext(SignupFormContext);
+    const { handlers } = useContext(SessionContext);
+    const [user, registerUser] = HandlePOST(auth.REGISTER);
 
-    const onSubmit = (data) => {
-        addFormData(data);
-        // TODO: don't add to form data, instead make an api call
-        // directly using the previous state and append new
-        // formdata to it
+    const { register, handleSubmit, errors, formData, setErrorAlert } = useContext(
+        SignupFormContext
+    );
+
+    const onSubmit = async (data) => {
+        const postData = { ...formData, ...data };
+
+        await registerUser(postData);
+
+        // if error, trigger alert; else log in
+        if (user.error) setErrorAlert(user.error.data.message);
+        else await handlers.login({ email: postData.email, password: postData.password });
     };
 
     return (

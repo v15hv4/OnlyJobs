@@ -14,10 +14,10 @@ import EducationInputGroup from "./EducationInputGroup";
 
 const Applicant = () => {
     const { handlers } = useContext(SessionContext);
+    const [user, registerUser] = HandlePOST(auth.REGISTER);
 
     const { handleSubmit, control, formData, setErrorAlert } = useContext(SignupFormContext);
     const [skills, getSkills] = HandleGET(languages.VIEW);
-    const [user, registerUser] = HandlePOST(auth.REGISTER);
     useEffect(() => getSkills(), []); // eslint-disable-line
 
     const formattedSkills = () => {
