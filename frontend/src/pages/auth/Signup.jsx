@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Alert, Button } from "reactstrap";
+
 import { SessionContext } from "App";
 
 import AuthContainer from "components/AuthContainer";
@@ -12,15 +13,18 @@ import Common from "./components/CommonForm";
 export const SignupFormContext = createContext();
 
 const Signup = () => {
-    const { register, handleSubmit, errors, control, watch } = useForm();
-    const { session, handlers } = useContext(SessionContext);
+    const { register, handleSubmit, errors, control, watch } = useForm({
+        reValidateMode: "onSubmit",
+    });
+    const { session } = useContext(SessionContext);
 
     const [current, setCurrent] = useState("common");
     const [formData, setFormData] = useState({});
+    const [errorAlert, setErrorAlert] = useState(null);
 
     const addFormData = (data) => setFormData({ ...formData, ...data });
 
-    useEffect(() => console.log(formData), [formData]);
+    useEffect(() => session.error && setErrorAlert(session.error.data), [session.error]);
 
     const pages = {
         common: <Common />,
@@ -28,20 +32,12 @@ const Signup = () => {
         recruiter: <Recruiter />,
     };
 
-    // const onSubmit = async (data) => {
-    //     console.log(data);
-    //     setCurrentData({ ...currentData, data });
-
-    //     if ("role" in data) setCurrent(data.role.value);
-    //     else await handlers.login(data);
-    // };
-
     return (
         <AuthContainer>
             <div className="d-flex flex-column w-75">
-                {session.error ? (
+                {errorAlert ? (
                     <Alert color="danger" className="mb-5 fw-700 bg-danger text-light border-0">
-                        Error: {session.error.data}
+                        Error: {errorAlert}
                     </Alert>
                 ) : null}
                 <div className="h1 fw-700 mb-5"> Sign Up </div>
@@ -55,6 +51,7 @@ const Signup = () => {
                         formData,
                         addFormData,
                         setCurrent,
+                        setErrorAlert,
                     }}
                 >
                     {pages[current]}

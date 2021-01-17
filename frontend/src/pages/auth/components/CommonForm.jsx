@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap"
 
 import { SignupFormContext } from "../Signup";
 import { selectStyles } from "./styles";
+import { valid_email } from "./validators";
 
 import Select from "react-select";
 
@@ -48,7 +49,7 @@ const Common = () => {
                     invalid={errors.email}
                     type="email"
                     name="email"
-                    innerRef={register({ required: true })}
+                    innerRef={register({ required: true, validate: (v) => valid_email(v) })}
                     className="bg-secondary text-light"
                 />
                 <FormFeedback className="fw-700"> Invalid email! </FormFeedback>

@@ -40,18 +40,22 @@ export const HandleGET = (endpoint, params) => {
     return [state, makeRequest];
 };
 
-export const HandlePOST = (endpoint, data) => {
+export const HandlePOST = (endpoint) => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const makeRequest = useCallback(async () => {
-        dispatch({ type: "LOADING" });
-        try {
-            const res = await axios.post(endpoint, data, { headers });
-            dispatch({ type: "SUCCESS", response: res.data });
-        } catch (e) {
-            dispatch({ type: "ERROR", response: e.response });
-        }
-    }, [endpoint, data]);
+    const makeRequest = useCallback(
+        async (data) => {
+            dispatch({ type: "LOADING" });
+            try {
+                const res = await axios.post(endpoint, data, { headers });
+                dispatch({ type: "SUCCESS", response: res.data });
+            } catch (e) {
+                console.log(e.response.data.message);
+                dispatch({ type: "ERROR", response: e.response });
+            }
+        },
+        [endpoint]
+    );
 
     return [state, makeRequest];
 };

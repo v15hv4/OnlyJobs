@@ -2,11 +2,11 @@ import { useContext, useRef } from "react";
 import { Input, FormFeedback, Row, Col } from "reactstrap";
 import { SignupFormContext } from "../Signup";
 
-const EducationInputGroup = () => {
+const EducationInputGroup = ({ idx }) => {
     const { register, errors, watch } = useContext(SignupFormContext);
 
     const startYear = useRef({});
-    startYear.current = watch("education_from", "");
+    startYear.current = watch(`education-${idx}-start_year`, "");
 
     return (
         <>
@@ -14,7 +14,7 @@ const EducationInputGroup = () => {
                 <Col form>
                     <Input
                         type="text"
-                        name="education_name"
+                        name={`education-${idx}-name`}
                         innerRef={register({ required: true })}
                         className="bg-secondary text-light"
                         placeholder="Institution Name"
@@ -24,9 +24,9 @@ const EducationInputGroup = () => {
             <Row form className="mb-3">
                 <Col form>
                     <Input
-                        invalid={errors.education_from}
+                        invalid={errors[`education-${idx}-start_year`]}
                         type="number"
-                        name="education_from"
+                        name={`education-${idx}-start_year`}
                         innerRef={register({
                             required: true,
                             validate: (v) =>
@@ -39,9 +39,9 @@ const EducationInputGroup = () => {
                 </Col>
                 <Col form>
                     <Input
-                        invalid={errors.education_to}
+                        invalid={errors[`education-${idx}-end_year`]}
                         type="number"
-                        name="education_to"
+                        name={`education-${idx}-end_year`}
                         innerRef={register({
                             required: false,
                             validate: (v) => {

@@ -1,34 +1,61 @@
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
+import { useContext, useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
+import { Button, Form, FormGroup, Label } from "reactstrap";
+
+import { SessionContext } from "App";
+import { SignupFormContext } from "../Signup";
 import { selectStyles } from "./styles";
 
-import { languages } from "api/endpoints";
-import { HandleGET } from "api/methods";
+import { languages, auth } from "api/endpoints";
+import { HandleGET, HandlePOST } from "api/methods";
 
 import Select from "react-select";
 import EducationInputGroup from "./EducationInputGroup";
 
-const Applicant = ({ formData, addFormData }) => {
-    const { register, handleSubmit, errors, control } = useForm();
-    const [{ loading, data: skills, error }, getSkills] = HandleGET(languages.VIEW);
+const Applicant = () => {
+    const { handlers } = useContext(SessionContext);
+
+    const { handleSubmit, control, formData, setErrorAlert } = useContext(SignupFormContext);
+    const [skills, getSkills] = HandleGET(languages.VIEW);
+    const [user, registerUser] = HandlePOST(auth.REGISTER);
     useEffect(() => getSkills(), []); // eslint-disable-line
 
     const formattedSkills = () => {
-        if (loading) return [{ value: "loading", error: "Loading..." }];
-        else if (error) return [{ value: "error", error: "Error loading skills!" }];
-        else return skills.map((s) => ({ value: s.name, label: s.name }));
+        if (skills.loading) return [{ value: "loading", error: "Loading..." }];
+        else if (skills.error) return [{ value: "error", error: "Error loading skills!" }];
+        else return skills.data.map((s) => ({ value: s._id, label: s.name }));
     };
 
     const [education, setEducation] = useState([]);
 
     const addEducation = () => setEducation([...education, EducationInputGroup]);
 
-    const onSubmit = (data) => {
-        addFormData(data);
-        // TODO: don't add to form data, instead make an api call
-        // directly using the previous state and append new
-        // formdata to it
+    const onSubmit = async (data) => {
+        const rawData = { ...formData, ...data };
+
+        // parse education inputs
+        var educationDict = {};
+        for (var line of Object.keys(rawData)) {
+            var parts = line.split("-");
+            if (parts.length && parts[0] === "education") {
+                if (!(parts[1] in educationDict)) educationDict[parts[1]] = {};
+                educationDict[parts[1]][parts[2]] = rawData[line];
+                delete rawData[line];
+            }
+        }
+        var educationList = Object.values(educationDict);
+
+        // parse skills input
+        var skillsList = rawData.skills ? rawData.skills.map((skill) => skill.value) : [];
+
+        // generate final data to post to server
+        const postData = { ...rawData, education: educationList, skills: skillsList };
+
+        await registerUser(postData);
+
+        // if error, trigger alert; else log in
+        if (user.error) setErrorAlert(user.error.data.message);
+        else await handlers.login({ email: postData.email, password: postData.password });
     };
 
     return (
@@ -40,7 +67,6 @@ const Applicant = ({ formData, addFormData }) => {
                 {education.map((E, idx) => (
                     <E idx={idx} />
                 ))}
-                <FormFeedback className="fw-700"> Invalid education! </FormFeedback>
             </FormGroup>
             <Button
                 outline

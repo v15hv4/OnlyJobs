@@ -23,6 +23,7 @@ export function valid_name(input) {
 }
 
 export function valid_email(input) {
+    // eslint-disable-next-line no-useless-escape
     const pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     return pattern.test(input);
 }
