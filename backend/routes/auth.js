@@ -59,7 +59,7 @@ router.get("/session", passport.authenticate("jwt", { session: false }), (req, r
 router.post("/register", async (req, res) => {
     try {
         // check whether email already in use
-        const existing = User.find({ email: req.body.email });
+        const existing = await User.find({ email: req.body.email });
         if (existing.length > 0)
             return res.status(500).json({ message: "Error! Email already in use." });
 
