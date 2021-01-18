@@ -6,6 +6,7 @@ import { Alert, Button } from "reactstrap";
 import { SessionContext } from "App";
 
 import AuthContainer from "components/AuthContainer";
+import ErrorAlert from "components/ErrorAlert";
 import Recruiter from "./components/RecruiterForm";
 import Applicant from "./components/ApplicantForm";
 import Common from "./components/CommonForm";
@@ -35,11 +36,7 @@ const Signup = () => {
     return (
         <AuthContainer>
             <div className="d-flex flex-column w-75">
-                {errorAlert ? (
-                    <Alert color="danger" className="mb-5 fw-700 bg-danger text-light border-0">
-                        Error: {errorAlert}
-                    </Alert>
-                ) : null}
+                {errorAlert ? <ErrorAlert message={errorAlert} /> : null}
                 <div className="h1 fw-700 mb-5"> Sign Up </div>
                 <SignupFormContext.Provider
                     value={{

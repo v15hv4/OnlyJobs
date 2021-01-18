@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Alert, Button, Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
 import { SessionContext } from "App";
 
 import AuthContainer from "components/AuthContainer";
+import ErrorAlert from "components/ErrorAlert";
 
 const Login = () => {
     const { session, handlers } = useContext(SessionContext);
@@ -17,11 +18,7 @@ const Login = () => {
     return (
         <AuthContainer>
             <div className="d-flex flex-column w-75">
-                {session.error ? (
-                    <Alert color="danger" className="mb-5 fw-700 bg-danger text-light border-0">
-                        Error: {session.error.data}
-                    </Alert>
-                ) : null}
+                {session.error ? <ErrorAlert message={session.error.data} /> : null}
                 <div className="h1 fw-700 mb-5"> Log in </div>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup>
