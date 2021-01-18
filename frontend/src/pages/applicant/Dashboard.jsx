@@ -2,7 +2,7 @@ import PageContainer from "components/PageContainer";
 
 const Dashboard = () => {
     return (
-        <PageContainer>
+        <PageContainer navbar>
             <h1> applicant dashboard </h1>
         </PageContainer>
     );

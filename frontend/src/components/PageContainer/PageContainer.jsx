@@ -1,11 +1,16 @@
-import "./styles.scss";
 import { Container } from "reactstrap";
+import "./styles.scss";
 
-const PageContainer = ({ children }) => {
+import Navigation from "../Navigation";
+
+const PageContainer = ({ navbar, children }) => {
     return (
-        <Container fluid className="page-container">
-            {children}
-        </Container>
+        <>
+            {navbar && <Navigation />}
+            <Container fluid className={`page-container${navbar && "-navbar"}`}>
+                {children}
+            </Container>
+        </>
     );
 };
 
