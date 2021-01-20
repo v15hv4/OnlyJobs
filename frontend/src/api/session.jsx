@@ -1,6 +1,12 @@
 import { useReducer, useCallback } from "react";
-import { auth } from "./endpoints";
 import axios from "axios";
+
+export const auth = {
+    LOGIN: "/api/auth/login",
+    LOGOUT: "/api/auth/logout",
+    SESSION: "/api/auth/session",
+    REGISTER: "/api/auth/register",
+};
 
 export const headers = {
     "Content-Type": "application/json",
