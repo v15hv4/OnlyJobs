@@ -12,6 +12,12 @@ export const selectStyles = {
     menu: (provided) => ({
         ...provided,
         backgroundColor: "#34343a",
+        color: "#dddddd",
+    }),
+    input: (provided) => ({
+        ...provided,
+        backgroundColor: "#34343a",
+        color: "#dddddd",
     }),
     control: (provided) => ({
         ...provided,
@@ -35,5 +41,12 @@ export const selectStyles = {
         backgroundColor: "#1c1c1d",
         color: "#dddddd",
         fontWeight: "700",
+    }),
+    multiValueRemove: (provided) => ({
+        ...provided,
+        ":hover": {
+            ...provided[":active"],
+            backgroundColor: `#ff4444`,
+        },
     }),
 };

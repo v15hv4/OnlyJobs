@@ -76,3 +76,13 @@ export const ManageSession = () => {
 
     return [state, { session, login, logout }];
 };
+
+export const HandleRegister = async (data, cb) => {
+    try {
+        const response = await axios.post(auth.REGISTER, data, { headers });
+        cb(null, response);
+    } catch (e) {
+        const error = e.response;
+        cb(error);
+    }
+};

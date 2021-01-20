@@ -16,9 +16,9 @@ const reducer = (state = initial, { type, response } = {}) => {
         case "LOADING":
             return { ...state, loading: true };
         case "SUCCESS":
-            return { ...state, loading: false, error: false, data: response };
+            return { ...state, loading: false, error: null, data: response };
         case "ERROR":
-            return { ...state, loading: false, error: response };
+            return { ...state, loading: false, error: response, data: null };
         default:
             return state;
     }

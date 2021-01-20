@@ -18,7 +18,6 @@ const Login = () => {
     return (
         <AuthContainer>
             <div className="d-flex flex-column w-75">
-                {session.error ? <ErrorAlert message={session.error.data} /> : null}
                 <div className="h1 fw-700 mb-5"> Log in </div>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup>
@@ -47,6 +46,7 @@ const Login = () => {
                         />
                         <FormFeedback className="fw-700"> Invalid password! </FormFeedback>
                     </FormGroup>
+                    {session.error ? <ErrorAlert message={session.error.data} /> : null}
                     <Button color="primary w-100 mt-4 fw-700">LOGIN</Button>
                 </Form>
                 <div className="w-100 d-flex justify-content-center align-items-center mt-5">
