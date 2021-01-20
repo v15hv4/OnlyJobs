@@ -2,13 +2,14 @@ import { useContext, useState, useEffect } from "react";
 import { Button, FormGroup, Label } from "reactstrap";
 import { Controller } from "react-hook-form";
 
-import { languages } from "api/endpoints";
-import { HandleGET } from "api/methods";
+import LanguageService from "api/languages";
 
 import { SignupFormContext } from "../Signup";
 import { selectStyles } from "./styles";
 
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+
+import SuccessAlert from "components/SuccessAlert";
 import EducationInputGroup from "./EducationInputGroup";
 
 const ApplicantFields = () => {
@@ -17,13 +18,20 @@ const ApplicantFields = () => {
     const [education, setEducation] = useState([]);
     const addEducation = () => setEducation([...education, EducationInputGroup]);
 
-    const [skills, getSkills] = HandleGET(languages.VIEW);
-    useEffect(() => getSkills(), []); // eslint-disable-line
+    const [skills, skillsActions] = LanguageService();
+    useEffect(() => skillsActions.view(), []); // eslint-disable-line
+
+    const [successAlert, setSuccessAlert] = useState(null);
 
     const formattedSkills = () => {
         if (skills.loading) return [{ value: "loading", error: "Loading..." }];
-        else if (skills.error) return [{ value: "error", error: "Error loading skills!" }];
-        else return skills.data.map((s) => ({ value: s._id, label: s.name }));
+        else if (skills.data) return skills.data.map((s) => ({ value: s._id, label: s.name }));
+        else return [{ value: "error", error: "Error loading skills!" }];
+    };
+
+    const addSkill = async (skill) => {
+        await skillsActions.add({ name: skill });
+        if (!skills.error) setSuccessAlert(`Language '${skill}' added to list!`);
     };
 
     return (
@@ -53,10 +61,16 @@ const ApplicantFields = () => {
                     options={formattedSkills()}
                     styles={selectStyles}
                     control={control}
-                    as={Select}
+                    as={CreatableSelect}
+                    isClearable
+                    isDisabled={skills.loading}
+                    isLoading={skills.loading}
+                    onCreateOption={addSkill}
                     defaultValue=""
+                    placeholder="Search..."
                     isMulti
                 />
+                {successAlert ? <SuccessAlert message={successAlert} /> : null}
             </FormGroup>
         </>
     );

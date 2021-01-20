@@ -38,7 +38,7 @@ mongoose.connect(mongo_uri, {
     useUnifiedTopology: true,
 });
 
-app.get("/", (req, res) => res.send("helo"));
+app.get("/", (_req, res) => res.send("helo"));
 
 app.listen(port, () => console.log(`Started server on port ${port}.`));
 mongoose.connection.once("open", () => console.log("Connected to MongoDB."));
