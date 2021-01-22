@@ -7,7 +7,23 @@ const router = Router();
 // retrieve jobs
 router.get("/", async (req, res) => {
     try {
-        const jobs = await Job.find(req.query).populate("skillset");
+        var jobs = await Job.find(req.query).populate("skillset");
+        jobs = jobs.map((j) => ({
+            deadline: j.deadline,
+            duration: j.duration,
+            post_date: j.post_date,
+            salary: j.salary,
+            skillset: j.skillset,
+            state: j.state,
+            type: j.type,
+            title: j.title,
+            rating: {
+                value: j.ratings.length
+                    ? j.ratings.reduce((a, i) => a.value + i) / j.ratings.length
+                    : 0,
+                amount: j.ratings.length,
+            },
+        }));
         return res.status(200).json(jobs);
     } catch (e) {
         return res.status(500).json(e);
