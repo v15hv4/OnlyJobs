@@ -1,0 +1,21 @@
+@import "theme.scss";
+
+.badge-icon {
+    height: 14px;
+    filter: invert(1);
+}
+
+.badge-text {
+    font-size: 0.8em;
+}
+
+.skill-badge {
+    font-size: 0.8em;
+    padding: 6px !important;
+    background-color: rgba($success, 0.1);
+    color: $success;
+}
+
+.permonth {
+    font-size: 0.8em;
+}

@@ -1,5 +1,8 @@
-import { Card, CardBody, CardHeader, CardFooter, Button } from "reactstrap";
+import "./styles.scss";
+import { Card, CardBody, CardHeader, CardFooter, Button, Badge } from "reactstrap";
 import StarRatingComponent from "react-star-rating-component";
+
+import { TimeSince, TimeUntil } from "utils";
 
 const JobItem = ({
     deadline,
@@ -15,21 +18,44 @@ const JobItem = ({
     return (
         <Card className="d-flex flex-fill p-3">
             <CardHeader>
-                <div className="h4 font-weight-bold">{title}</div>
+                <div className="d-flex justify-content-between mb-3">
+                    <div className="text-muted fw-500">{TimeSince(post_date)} ago</div>
+                    <div className="text-danger fw-500">{TimeUntil(deadline)} left</div>
+                </div>
+                <div className="h3 font-weight-bold">{title}</div>
             </CardHeader>
             <CardBody className="d-flex flex-fill flex-column justify-content-end py-1">
-                <div className="d-flex">
-                    <div className="mr-2 text-capitalize">{type.split("_").join(" ")}</div>
-                    <div>{`${duration} month${duration > 1 ? "s" : ""}`}</div>
+                <div className="d-flex mb-3">
+                    <Badge
+                        color="info"
+                        className="text-capitalize mr-2 d-flex align-items-center justify-content-center p-2 py-0 badge-text"
+                    >
+                        <img src="/clock.svg" alt="" className="badge-icon mr-1" />
+                        {type.split("_").join(" ")}
+                    </Badge>
+                    <Badge className="my-auto p-2 d-flex align-items-center justify-content-center badge-text">
+                        <img src="/calendar.svg" alt="" className="badge-icon mr-1" />
+                        {`${duration} month${duration > 1 ? "s" : ""}`}
+                    </Badge>
                 </div>
-                <div>{skillset.map((skill) => skill.name)}</div>
-                <div>Posted {post_date}</div>
-                <div>{deadline} to apply</div>
-                <div className="d-flex justify-content-between">
-                    <div>₹{new Intl.NumberFormat("en-IN").format(salary)}</div>
-                    <div className="d-flex">
-                        <div className="h5">
+                <div>
+                    {skillset.map((skill) => (
+                        <Badge outline color="success" className="skill-badge my-1 mr-1 p-1">
+                            {skill.name}
+                        </Badge>
+                    ))}
+                </div>
+                <div className="d-flex justify-content-between my-3">
+                    <div className="text-secondary">
+                        <div className="h4 fw-700 mb-0 pb-0">
+                            ₹{new Intl.NumberFormat("en-IN").format(salary)}
+                        </div>
+                        <div className="mt-0 pt-0 permonth">per month</div>
+                    </div>
+                    <div className="d-flex my-auto ">
+                        <div className="h5 my-auto">
                             <StarRatingComponent
+                                className="d-flex align-items-center"
                                 editing={false}
                                 starColor="#ffb400"
                                 emptyStarColor="#ffb400"
