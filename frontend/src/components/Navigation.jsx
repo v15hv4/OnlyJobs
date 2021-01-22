@@ -30,8 +30,8 @@ const Navigation = () => {
             : [];
 
     return (
-        <Navbar color="white" light expand="md" className="m-3">
-            <NavbarBrand href="/">
+        <Navbar color="white" light expand="md" className="p-4">
+            <NavbarBrand href="/" className="mx-2">
                 <img src="/onlyjobs_full.svg" alt="OnlyJobs" className="navbar-logo" />
             </NavbarBrand>
             <NavbarToggler onClick={toggle} />

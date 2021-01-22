@@ -51,7 +51,7 @@ router.get("/session", passport.authenticate("jwt", { session: false }), (req, r
             user: { id: _id, name: name, role: details.toLowerCase() },
         });
     } else {
-        res.status(500).send("bruh");
+        res.status(401).send("Unauthorized");
     }
 });
 

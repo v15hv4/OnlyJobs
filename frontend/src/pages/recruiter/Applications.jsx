@@ -1,6 +1,6 @@
 import PageContainer from "components/PageContainer";
 
-const Dashboard = () => {
+const Applications = () => {
     return (
         <PageContainer>
             <h1> recruiter applications </h1>
@@ -8,4 +8,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Applications;
