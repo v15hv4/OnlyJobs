@@ -3,6 +3,7 @@ import { Row, Col, Container } from "reactstrap";
 import JobItem from "./JobItem";
 
 const JobsList = ({ jobs }) => {
+    console.log(jobs);
     return (
         <Container>
             <Row>

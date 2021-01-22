@@ -8,7 +8,7 @@ import JobsList from "components/JobsList";
 
 const Dashboard = () => {
     const [jobs, jobHandlers] = JobService();
-    useEffect(() => jobHandlers.view(), []); // eslint-disable-line
+    useEffect(() => jobHandlers.view({ state: "available" }), []); // eslint-disable-line
 
     return (
         <PageContainer navbar>
