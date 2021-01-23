@@ -1,5 +1,6 @@
 import "./styles.scss";
 import { Container, Row, Col, Card, CardBody, FormGroup, Label, Input } from "reactstrap";
+import Select from "react-select";
 
 const SortFilterSidebar = ({
     setSortOrder,
@@ -104,7 +105,7 @@ const SortFilterSidebar = ({
                         </CardBody>
                     </Card>
                 </Col>
-                <Col className="mt-3">
+                <Col className="mt-4">
                     <Card className="p-2">
                         <CardBody className="pb-0">
                             <div className="fw-700 d-flex align-items-center">
@@ -157,7 +158,7 @@ const SortFilterSidebar = ({
                                     </Label>
                                 </FormGroup>
                             </FormGroup>
-                            <div className="fw-500 my-1 mb-3"> Salary Range </div>
+                            <div className="fw-500 mt-3 mb-2"> Salary Range </div>
                             <FormGroup className="d-flex align-items-center">
                                 <Input
                                     type="number"
@@ -173,6 +174,22 @@ const SortFilterSidebar = ({
                                     placeholder="Max"
                                     value={salaryFilter.to === Infinity ? "∞" : salaryFilter.to}
                                     onChange={(e) => toSalary(e.target.value)}
+                                />
+                            </FormGroup>
+                            <div className="fw-500 mt-4 mb-2"> Duration </div>
+                            <FormGroup className="d-flex align-items-center">
+                                <Select
+                                    options={[
+                                        { value: 1, label: "Indefinite" },
+                                        { value: 2, label: "< 2 months" },
+                                        { value: 3, label: "< 3 months" },
+                                        { value: 4, label: "< 4 months" },
+                                        { value: 5, label: "< 5 months" },
+                                        { value: 6, label: "< 6 months" },
+                                        { value: 7, label: "< 7 months" },
+                                    ]}
+                                    onChange={(e) => setDurationFilter(e.value)}
+                                    className="w-100"
                                 />
                             </FormGroup>
                         </CardBody>

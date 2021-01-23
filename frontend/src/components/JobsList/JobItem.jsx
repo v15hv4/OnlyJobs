@@ -35,7 +35,9 @@ const JobItem = ({
                     </Badge>
                     <Badge className="my-auto p-2 d-flex align-items-center justify-content-center badge-text">
                         <img src="/calendar.svg" alt="" className="badge-icon mr-1" />
-                        {`${duration} month${duration > 1 ? "s" : ""}`}
+                        {duration !== 0
+                            ? `${duration} month${duration > 1 ? "s" : ""}`
+                            : "Indefinite"}
                     </Badge>
                 </div>
                 <div>
