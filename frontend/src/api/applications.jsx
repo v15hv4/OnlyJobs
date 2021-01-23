@@ -39,7 +39,7 @@ const ApplicationService = () => {
                 method: "post",
                 endpoint: endpoints.ADD,
                 data: data,
-                cb: (res) => dispatch({ type: "SUCCESS", response: [...state.data, res.data] }),
+                cb: (res) => dispatch({ type: "SUCCESS", response: res.data }),
             });
         },
         edit: async (id, data) => {

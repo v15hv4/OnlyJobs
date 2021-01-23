@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
     try {
         var jobs = await Job.find(req.query).populate("skillset");
         jobs = jobs.map((j) => ({
+            _id: j._id,
             deadline: j.deadline,
             duration: j.duration,
             post_date: j.post_date,

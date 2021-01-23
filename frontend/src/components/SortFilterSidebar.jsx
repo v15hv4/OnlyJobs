@@ -106,7 +106,7 @@ const SortFilterSidebar = ({
                 </Col>
                 <Col className="mt-4">
                     <Card className="p-2">
-                        <CardBody className="pb-0">
+                        <CardBody className="pb-2">
                             <div className="fw-700 d-flex align-items-center">
                                 <img src="/filter.svg" alt="" className="mr-2" />
                                 Filters

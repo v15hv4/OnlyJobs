@@ -27,14 +27,14 @@ router.post("/new", async (req, res) => {
         const openApplications = applications.filter((a) => a.applicant.equals(req.body.applicant));
         if (openApplications.filter((o) => o.job.equals(req.body.job)).length > 0) {
             return res.status(500).json({
-                message: "Applicant has already applied to this job!",
+                message: "You have already applied to this job!",
             });
         }
 
         // check whether applicant has exceeded limit
         if (openApplications.length > 10) {
             return res.status(500).json({
-                message: "Applicant may not have more than 10 open applications!",
+                message: "You may not have more than 10 open applications!",
             });
         }
 
@@ -45,7 +45,7 @@ router.post("/new", async (req, res) => {
         });
         if (acceptedApplication) {
             return res.status(500).json({
-                message: "Applicant has already been accepted into a job!",
+                message: "You have already been accepted into a job!",
             });
         }
 
