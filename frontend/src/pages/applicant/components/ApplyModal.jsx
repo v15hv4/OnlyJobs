@@ -18,7 +18,7 @@ import ApplicationService from "api/applications";
 import ErrorAlert from "components/ErrorAlert";
 import SuccessAlert from "components/SuccessAlert";
 
-const ApplyModal = ({ modal, toggle, job }) => {
+const ApplyModal = ({ modal, toggle, job, successAlert, setSuccessAlert }) => {
     const { session } = useContext(SessionContext);
     const { register, handleSubmit, errors } = useForm();
 
@@ -29,10 +29,10 @@ const ApplyModal = ({ modal, toggle, job }) => {
     useEffect(() => setErrorAlert(false), [job]);
     useEffect(() => application.error && setErrorAlert(application.error), [application]);
 
-    const [successAlert, setSuccessAlert] = useState(false);
-    useEffect(() => setSuccessAlert(false), [job]);
+    useEffect(() => setSuccessAlert(false), [job, setSuccessAlert]);
     useEffect(() => application.data && setSuccessAlert("Submitted application."), [
         application.data,
+        setSuccessAlert,
     ]);
 
     const onSubmit = async (data) => {

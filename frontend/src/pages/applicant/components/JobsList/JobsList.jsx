@@ -5,9 +5,16 @@ import JobItem from "components/JobItem";
 import NullIndicator from "components/NullIndicator";
 import ApplyModal from "../ApplyModal";
 
-const JobsList = ({ jobs }) => {
+const JobsList = ({ jobs, refreshList }) => {
+    const [success, setSuccess] = useState(false);
     const [modal, setModal] = useState(false);
-    const toggleModal = () => setModal(!modal);
+    const toggleModal = () => {
+        if (success) {
+            refreshList();
+            setSuccess(false);
+        }
+        setModal(!modal);
+    };
 
     const [applyJob, setApplyJob] = useState(null);
     const apply = (job) => {
@@ -18,7 +25,13 @@ const JobsList = ({ jobs }) => {
     if (!jobs.length) return <NullIndicator> No results found. </NullIndicator>;
     return (
         <Container fluid>
-            <ApplyModal modal={modal} toggle={toggleModal} job={applyJob} />
+            <ApplyModal
+                modal={modal}
+                toggle={toggleModal}
+                job={applyJob}
+                successAlert={success}
+                setSuccessAlert={setSuccess}
+            />
             <Row>
                 {jobs.map((job, key) => (
                     <Col sm={4} className="my-3 d-flex flex-fill" key={key}>

@@ -80,7 +80,12 @@ const Dashboard = () => {
                         setSearchTerm={setSearchTerm}
                         className="mb-3 mild-shadow"
                     />
-                    {!jobs.loading && <JobsList jobs={filteredList} />}
+                    {!jobs.loading && (
+                        <JobsList
+                            jobs={filteredList}
+                            refreshList={() => jobHandlers.view({ state: "available" })}
+                        />
+                    )}
                 </Col>
             </Row>
         </PageContainer>
