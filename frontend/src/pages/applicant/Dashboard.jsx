@@ -22,7 +22,7 @@ const Dashboard = () => {
     // filter states
     const jobTypes = new Set(["part_time", "full_time", "work_from_home"]);
     const [typeFilter, setTypeFilter] = useState(jobTypes);
-    const [salaryFilter, setSalaryFilter] = useState({ from: 0, to: Infinity });
+    const [salaryFilter, setSalaryFilter] = useState({ from: -Infinity, to: Infinity });
     const [durationFilter, setDurationFilter] = useState(7);
 
     const [filteredList, setFilteredList] = useState([]);
@@ -69,6 +69,7 @@ const Dashboard = () => {
                         descending={descending}
                         typeFilter={typeFilter}
                         setTypeFilter={setTypeFilter}
+                        salaryFilter={salaryFilter}
                         setSalaryFilter={setSalaryFilter}
                         setDurationFilter={setDurationFilter}
                     />

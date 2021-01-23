@@ -1,3 +1,4 @@
+import "./styles.scss";
 import { Container, Row, Col, Card, CardBody, FormGroup, Label, Input } from "reactstrap";
 
 const SortFilterSidebar = ({
@@ -6,6 +7,7 @@ const SortFilterSidebar = ({
     descending,
     typeFilter,
     setTypeFilter,
+    salaryFilter,
     setSalaryFilter,
     setDurationFilter,
 }) => {
@@ -17,6 +19,14 @@ const SortFilterSidebar = ({
     const removeType = (type) => {
         typeFilter.delete(type);
         setTypeFilter(new Set(typeFilter));
+    };
+
+    const fromSalary = (value) => {
+        setSalaryFilter({ ...salaryFilter, from: value ? value : -Infinity });
+    };
+
+    const toSalary = (value) => {
+        setSalaryFilter({ ...salaryFilter, to: value ? value : Infinity });
     };
 
     return (
@@ -146,6 +156,24 @@ const SortFilterSidebar = ({
                                         <div className="ml-2">Work from Home</div>
                                     </Label>
                                 </FormGroup>
+                            </FormGroup>
+                            <div className="fw-500 my-1 mb-3"> Salary Range </div>
+                            <FormGroup className="d-flex align-items-center">
+                                <Input
+                                    type="number"
+                                    className="input-border w-50 mr-2"
+                                    placeholder="Min"
+                                    value={salaryFilter.from}
+                                    onChange={(e) => fromSalary(e.target.value)}
+                                />
+                                -
+                                <Input
+                                    type="number"
+                                    className="input-border w-50 ml-2"
+                                    placeholder="Max"
+                                    value={salaryFilter.to === Infinity ? "∞" : salaryFilter.to}
+                                    onChange={(e) => toSalary(e.target.value)}
+                                />
                             </FormGroup>
                         </CardBody>
                     </Card>
