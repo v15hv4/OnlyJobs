@@ -13,7 +13,7 @@ const router = Router();
 // retrieve jobs
 router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
-        var jobs = await Job.find(req.query).populate("skillset");
+        var jobs = await Job.find(req.query).populate("skillset").populate("recruiter");
         jobs = jobs.map((j) => ({
             _id: j._id,
             deadline: j.deadline,
@@ -30,6 +30,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
                     : 0,
                 amount: j.ratings.length,
             },
+            recruiter: j.recruiter,
         }));
 
         // change job status to 'applied' if application exists

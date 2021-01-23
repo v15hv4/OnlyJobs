@@ -15,16 +15,20 @@ const JobItem = ({
     state,
     title,
     type,
+    recruiter,
     buttonAction,
 }) => {
     return (
         <Card className="d-flex flex-fill p-3">
             <CardHeader>
-                <div className="d-flex justify-content-between mb-3">
-                    <div className="text-muted fw-500">{TimeSince(post_date)} ago</div>
-                    <div className="text-danger fw-500">{TimeUntil(deadline)} left</div>
-                </div>
                 <div className="h3 font-weight-bold">{title}</div>
+                <div className="d-flex flex-column mb-3">
+                    <div className="text-muted fw-500">
+                        Posted {TimeSince(post_date)} ago by
+                        <span className="fw-700 ml-1">{recruiter.name}</span>
+                    </div>
+                    <div className="text-danger fw-500">{TimeUntil(deadline)} left to apply</div>
+                </div>
             </CardHeader>
             <CardBody className="d-flex flex-fill flex-column justify-content-end py-1">
                 <div className="d-flex mb-3">
@@ -97,6 +101,7 @@ const JobItem = ({
             <CardFooter className="pt-0">
                 <Button
                     disabled={state === "applied"}
+                    outline={state === "applied"}
                     type="button"
                     color="primary"
                     className="fw-700 w-100 text-uppercase"
