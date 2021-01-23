@@ -14,7 +14,7 @@ dotenv.config();
 const router = Router();
 
 const signToken = (pk) => {
-    return JWT.sign({ iss: "OnlyJobs", sub: pk }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    return JWT.sign({ iss: "OnlyJobs", sub: pk }, process.env.JWT_SECRET, { expiresIn: "24h" });
 };
 
 // authenticate & log the user in
