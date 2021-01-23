@@ -95,16 +95,15 @@ const JobItem = ({
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
-                {state === "available" && (
-                    <Button
-                        type="button"
-                        color="primary"
-                        className="fw-700 w-100 text-uppercase"
-                        onClick={() => buttonAction({ _id, title })}
-                    >
-                        Apply
-                    </Button>
-                )}
+                <Button
+                    disabled={state === "applied"}
+                    type="button"
+                    color="primary"
+                    className="fw-700 w-100 text-uppercase"
+                    onClick={() => buttonAction({ _id, title })}
+                >
+                    {state === "applied" ? "APPLIED" : "APPLY"}
+                </Button>
             </CardFooter>
         </Card>
     );

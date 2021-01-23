@@ -41,9 +41,7 @@ const ApplyModal = ({ modal, toggle, job }) => {
             job: job._id,
             SOP: data.SOP,
         };
-        console.log(postData);
         await applicationActions.add(postData);
-        console.log(application);
     };
 
     return (

@@ -2,10 +2,16 @@ import { Router } from "express";
 import Job from "../models/Job";
 import Application from "../models/Application";
 
+import mongoose from "mongoose";
+import passport from "passport";
+import passportConfig from "../passport";
+
+var ObjectId = mongoose.Types.ObjectId;
+
 const router = Router();
 
 // retrieve jobs
-router.get("/", async (req, res) => {
+router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         var jobs = await Job.find(req.query).populate("skillset");
         jobs = jobs.map((j) => ({
@@ -25,6 +31,26 @@ router.get("/", async (req, res) => {
                 amount: j.ratings.length,
             },
         }));
+
+        // change job status to 'applied' if application exists
+        if (req.user.details === "Applicant") {
+            var applications = (
+                await Application.find(
+                    {
+                        applicant: new ObjectId(req.user._id),
+                    },
+                    "job"
+                )
+            ).map((a) => a.job.toString());
+            if (applications.length) {
+                jobs.forEach((j) => {
+                    if (applications.includes(j._id.toString())) {
+                        j.state = "applied";
+                    }
+                });
+            }
+        }
+
         return res.status(200).json(jobs);
     } catch (e) {
         return res.status(500).json(e);
