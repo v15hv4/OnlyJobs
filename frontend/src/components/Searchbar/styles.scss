@@ -2,4 +2,16 @@
 
 .searchbar {
     border: 1px solid $shadow !important;
+    padding-left: 44px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    top: 14px;
+    left: 26px;
+    filter: opacity(0.4);
 }
