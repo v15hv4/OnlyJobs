@@ -2,11 +2,8 @@ import { Router } from "express";
 import Job from "../models/Job";
 import Application from "../models/Application";
 
-import mongoose from "mongoose";
 import passport from "passport";
 import passportConfig from "../passport";
-
-var ObjectId = mongoose.Types.ObjectId;
 
 const router = Router();
 
@@ -31,26 +28,28 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
                 amount: j.ratings.length,
             },
             recruiter: j.recruiter,
+            max_positions: j.max_positions,
+            max_applications: j.max_applications,
         }));
 
-        // change job status to 'applied' if application exists
-        if (req.user.details === "Applicant") {
-            var applications = (
-                await Application.find(
-                    {
-                        applicant: new ObjectId(req.user._id),
-                    },
-                    "job"
-                )
-            ).map((a) => a.job.toString());
-            if (applications.length) {
-                jobs.forEach((j) => {
-                    if (applications.includes(j._id.toString())) {
-                        j.state = "applied";
-                    }
-                });
+        const allApplications = await Application.find({});
+        const applications = allApplications
+            .filter((a) => a.applicant.equals(req.user._id))
+            .map((a) => a.job.toString());
+
+        jobs.forEach((j) => {
+            const filled = allApplications.filter(
+                (a) => a.job.equals(j._id) && a.state !== "deleted" // && a.state !== "rejected"
+            ).length;
+            if (filled >= j.max_applications || filled >= j.max_positions) {
+                j.state = "full";
             }
-        }
+            if (req.user.details === "Applicant") {
+                if (applications.includes(j._id.toString())) {
+                    j.state = "applied";
+                }
+            }
+        });
 
         return res.status(200).json(jobs);
     } catch (e) {

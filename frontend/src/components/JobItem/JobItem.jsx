@@ -100,14 +100,14 @@ const JobItem = ({
             </CardBody>
             <CardFooter className="pt-0">
                 <Button
-                    disabled={state === "applied"}
-                    outline={state === "applied"}
+                    disabled={["applied", "full"].includes(state)}
+                    outline={["applied", "full"].includes(state)}
                     type="button"
-                    color="primary"
+                    color={state === "full" ? "danger" : "primary"}
                     className="fw-700 w-100 text-uppercase"
                     onClick={() => buttonAction({ _id, title })}
                 >
-                    {state === "applied" ? "APPLIED" : "APPLY"}
+                    {state === "applied" ? "APPLIED" : state === "full" ? "FULL" : "APPLY"}
                 </Button>
             </CardFooter>
         </Card>
