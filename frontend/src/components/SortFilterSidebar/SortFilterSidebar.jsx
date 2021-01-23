@@ -1,6 +1,24 @@
 import { Container, Row, Col, Card, CardBody, FormGroup, Label, Input } from "reactstrap";
 
-const SortFilterSidebar = ({ setSortOrder, setDescending, descending }) => {
+const SortFilterSidebar = ({
+    setSortOrder,
+    setDescending,
+    descending,
+    typeFilter,
+    setTypeFilter,
+    setSalaryFilter,
+    setDurationFilter,
+}) => {
+    const addType = (type) => {
+        typeFilter.add(type);
+        setTypeFilter(new Set(typeFilter));
+    };
+
+    const removeType = (type) => {
+        typeFilter.delete(type);
+        setTypeFilter(new Set(typeFilter));
+    };
+
     return (
         <Container>
             <Row>
@@ -77,12 +95,58 @@ const SortFilterSidebar = ({ setSortOrder, setDescending, descending }) => {
                     </Card>
                 </Col>
                 <Col className="mt-3">
-                    <Card>
-                        <CardBody>
+                    <Card className="p-2">
+                        <CardBody className="pb-0">
                             <div className="fw-700 d-flex align-items-center">
                                 <img src="/filter.svg" alt="" className="mr-2" />
                                 Filters
                             </div>
+                            <hr />
+                            <div className="fw-500 mb-1"> Job Type </div>
+                            <FormGroup tag="fieldset">
+                                <FormGroup check className="my-2">
+                                    <Label check>
+                                        <Input
+                                            type="checkbox"
+                                            checked={typeFilter.has("part_time")}
+                                            onChange={(e) =>
+                                                e.target.checked
+                                                    ? addType("part_time")
+                                                    : removeType("part_time")
+                                            }
+                                        />
+                                        <div className="ml-2">Part Time</div>
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check className="my-2">
+                                    <Label check>
+                                        <Input
+                                            type="checkbox"
+                                            checked={typeFilter.has("full_time")}
+                                            onChange={(e) =>
+                                                e.target.checked
+                                                    ? addType("full_time")
+                                                    : removeType("full_time")
+                                            }
+                                        />
+                                        <div className="ml-2">Full Time</div>
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check className="my-2">
+                                    <Label check>
+                                        <Input
+                                            type="checkbox"
+                                            checked={typeFilter.has("work_from_home")}
+                                            onChange={(e) =>
+                                                e.target.checked
+                                                    ? addType("work_from_home")
+                                                    : removeType("work_from_home")
+                                            }
+                                        />
+                                        <div className="ml-2">Work from Home</div>
+                                    </Label>
+                                </FormGroup>
+                            </FormGroup>
                         </CardBody>
                     </Card>
                 </Col>
