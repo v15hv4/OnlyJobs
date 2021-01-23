@@ -2,14 +2,27 @@ import { Router } from "express";
 import Application from "../models/Application";
 import Job from "../models/Job";
 
+import passport from "passport";
+import passportConfig from "../passport";
+
 const router = Router();
 
 // retrieve applications
-router.get("/", async (req, res) => {
+router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
-        const applications = await Application.find(req.query)
-            .populate("applicant")
-            .populate("job");
+        var applications = await Application.find(req.query).populate("applicant").populate("job");
+
+        switch (req.user.details) {
+            case "Applicant":
+                applications = applications.filter((a) => a.applicant.equals(req.user._id));
+                break;
+            case "Recruiter":
+                applications = applications.filter((a) => a.job.recruiter.equals(req.user._id));
+                break;
+            default:
+                break;
+        }
+
         return res.status(200).json(applications);
     } catch (e) {
         return res.status(500).json(e);

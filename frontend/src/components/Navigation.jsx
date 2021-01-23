@@ -45,6 +45,14 @@ const Navigation = () => {
                         </NavItem>
                     ))}
                 </Nav>
+                <div className="mx-3 text-muted">|</div>
+                <Nav navbar>
+                    <NavItem className="mx-2">
+                        <NavLink tag={RoutedNavLink} to="/profile" className="fw-700">
+                            Profile
+                        </NavLink>
+                    </NavItem>
+                </Nav>
             </Collapse>
         </Navbar>
     );

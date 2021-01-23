@@ -3,7 +3,7 @@ import { Row, Col, Container } from "reactstrap";
 
 import JobItem from "components/JobItem";
 import NullIndicator from "components/NullIndicator";
-import ApplyModal from "../ApplyModal";
+import ApplyModal from "./ApplyModal";
 
 const JobsList = ({ jobs, refreshList }) => {
     const [success, setSuccess] = useState(false);
