@@ -1,8 +1,10 @@
 import { Row, Col, Container } from "reactstrap";
 
 import JobItem from "./JobItem";
+import NullIndicator from "../NullIndicator";
 
 const JobsList = ({ jobs }) => {
+    if (!jobs.length) return <NullIndicator> No results found. </NullIndicator>;
     return (
         <Container fluid>
             <Row>
