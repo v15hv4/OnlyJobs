@@ -3,7 +3,7 @@ import { Container, Input } from "reactstrap";
 
 const Searchbar = ({ searchTerm, setSearchTerm, className }) => {
     return (
-        <Container className="search-container">
+        <Container fluid className="search-container">
             <img src="/search.svg" alt="" className="search-icon" />
             <Input
                 type="text"

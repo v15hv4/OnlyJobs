@@ -4,7 +4,7 @@ import JobItem from "./JobItem";
 
 const JobsList = ({ jobs }) => {
     return (
-        <Container>
+        <Container fluid>
             <Row>
                 {jobs.map((job, key) => (
                     <Col sm={4} className="my-3 d-flex flex-fill" key={key}>

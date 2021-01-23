@@ -43,7 +43,7 @@ input[type="number"] {
 
 .body-height {
     height: $body-height;
-    overflow: scroll !important;
+    overflow-y: scroll !important;
 }
 
 .mild-shadow {
