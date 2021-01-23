@@ -49,11 +49,15 @@ input[type="number"] {
 .mild-shadow {
     box-shadow: 0 0 50px $shadow;
 }
+
+.mild-border {
+    border: 1px solid hsl(0, 0%, 80%) !important;
+}
 // }}}
 
 // bootstrap overrides {{{
 .form-control {
-    border: none !important;
+    border: none;
 }
 
 .card {

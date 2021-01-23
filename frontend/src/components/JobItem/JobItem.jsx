@@ -5,6 +5,7 @@ import StarRatingComponent from "react-star-rating-component";
 import { TimeSince, TimeUntil } from "utils";
 
 const JobItem = ({
+    _id,
     deadline,
     duration,
     post_date,
@@ -14,6 +15,7 @@ const JobItem = ({
     state,
     title,
     type,
+    buttonAction,
 }) => {
     return (
         <Card className="d-flex flex-fill p-3">
@@ -94,7 +96,12 @@ const JobItem = ({
             </CardBody>
             <CardFooter className="pt-0">
                 {state === "available" && (
-                    <Button type="button" color="primary" className="fw-700 w-100 text-uppercase">
+                    <Button
+                        type="button"
+                        color="primary"
+                        className="fw-700 w-100 text-uppercase"
+                        onClick={() => buttonAction({ _id, title })}
+                    >
                         Apply
                     </Button>
                 )}

@@ -1,4 +1,3 @@
-import "./styles.scss";
 import { Container, Row, Col, Card, CardBody, FormGroup, Label, Input } from "reactstrap";
 import Select from "react-select";
 
@@ -162,7 +161,7 @@ const SortFilterSidebar = ({
                             <FormGroup className="d-flex align-items-center">
                                 <Input
                                     type="number"
-                                    className="input-border w-50 mr-2"
+                                    className="mild-border w-50 mr-2"
                                     placeholder="Min"
                                     value={salaryFilter.from}
                                     onChange={(e) => fromSalary(e.target.value)}
@@ -170,7 +169,7 @@ const SortFilterSidebar = ({
                                 -
                                 <Input
                                     type="number"
-                                    className="input-border w-50 ml-2"
+                                    className="mild-border w-50 ml-2"
                                     placeholder="Max"
                                     value={salaryFilter.to === Infinity ? "∞" : salaryFilter.to}
                                     onChange={(e) => toSalary(e.target.value)}

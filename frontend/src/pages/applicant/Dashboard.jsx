@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import JobService from "api/jobs";
 
 import PageContainer from "components/PageContainer";
-import JobsList from "components/JobsList";
+import JobsList from "./components/JobsList";
 import Searchbar from "components/Searchbar";
 import SortFilterSidebar from "components/SortFilterSidebar";
 
