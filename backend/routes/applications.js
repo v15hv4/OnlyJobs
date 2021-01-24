@@ -10,7 +10,9 @@ const router = Router();
 // retrieve applications
 router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
-        var applications = await Application.find(req.query).populate("applicant").populate("job");
+        var applications = await Application.find(req.query)
+            .populate("applicant")
+            .populate({ path: "job", populate: { path: "recruiter" } });
 
         switch (req.user.details) {
             case "Applicant":

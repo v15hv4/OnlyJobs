@@ -48,7 +48,7 @@ const JobItem = ({
                 </div>
                 <div>
                     {skillset.map((skill) => (
-                        <Badge outline color="success" className="skill-badge my-1 mr-1 p-1">
+                        <Badge outline color="success" className="skill-badge my-1 mr-2 p-2">
                             {skill.name}
                         </Badge>
                     ))}

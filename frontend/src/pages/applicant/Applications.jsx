@@ -16,7 +16,7 @@ const Applications = () => {
         <PageContainer navbar>
             <Row className="body-height overflow-auto">
                 <Col className="mt-5">
-                    {!applications.loading && <ApplicationsList applications={applications} />}
+                    {!applications.loading && <ApplicationsList applications={applications.data} />}
                 </Col>
             </Row>
         </PageContainer>

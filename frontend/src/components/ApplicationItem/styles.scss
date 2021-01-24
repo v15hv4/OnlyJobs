@@ -1,0 +1,25 @@
+@import "index.scss";
+
+.state-applied {
+    background-color: rgba($info, 0.08);
+    color: $info;
+}
+
+.state-shortlisted {
+    background-color: rgba($warning, 0.08);
+    color: $warning;
+}
+
+.state-accepted {
+    background-color: rgba($success, 0.08);
+    color: $success;
+}
+
+.state-rejected {
+    background-color: rgba($danger, 0.08);
+    color: $danger;
+}
+
+.salary-container {
+    min-width: 15em;
+}

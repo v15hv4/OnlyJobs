@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Container } from "reactstrap";
 
 import NullIndicator from "components/NullIndicator";
+import ApplicationItem from "components/ApplicationItem";
 
 const ApplicationsList = ({ applications }) => {
     if (!applications.length)
@@ -19,7 +20,9 @@ const ApplicationsList = ({ applications }) => {
         <Container fluid>
             <Row>
                 {applications.map((application) => (
-                    <Col>{application.title}</Col>
+                    <Col md={6} className="mb-4 d-flex flex-fill">
+                        <ApplicationItem {...application} />
+                    </Col>
                 ))}
             </Row>
         </Container>

@@ -20,6 +20,11 @@ const ApplicationSchema = new Schema({
             message: "SOP can not exceed 250 words!",
         },
     },
+    applied_date: {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
     state: {
         type: String,
         required: true,

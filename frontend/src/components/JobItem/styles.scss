@@ -6,14 +6,14 @@
 }
 
 .badge-text {
-    font-size: 0.8em;
+    font-size: 0.8em !important;
 }
 
 .skill-badge {
     font-size: 0.8em;
     padding: 6px !important;
-    background-color: rgba($success, 0.1);
-    color: $success;
+    background-color: rgba($success, 0.1) !important;
+    color: $success !important;
 }
 
 .permonth {
