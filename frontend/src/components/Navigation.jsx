@@ -6,7 +6,7 @@ import "./PageContainer/styles.scss";
 import { SessionContext } from "App";
 
 const Navigation = () => {
-    const { session } = useContext(SessionContext);
+    const { session, handlers } = useContext(SessionContext);
 
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -50,6 +50,16 @@ const Navigation = () => {
                     <NavItem className="mx-2">
                         <NavLink tag={RoutedNavLink} to="/profile" className="fw-700">
                             Profile
+                        </NavLink>
+                    </NavItem>
+                    <NavItem className="mx-2">
+                        <NavLink
+                            tag={RoutedNavLink}
+                            to=""
+                            className="fw-700 text-danger"
+                            onClick={async () => await handlers.logout()}
+                        >
+                            Log Out
                         </NavLink>
                     </NavItem>
                 </Nav>
