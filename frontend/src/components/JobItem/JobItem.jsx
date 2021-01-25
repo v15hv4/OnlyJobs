@@ -1,8 +1,12 @@
 import "./styles.scss";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Card, CardBody, CardHeader, CardFooter, Button, Badge } from "reactstrap";
-import StarRatingComponent from "react-star-rating-component";
 
+import { SessionContext } from "App";
 import { TimeSince, TimeUntil } from "utils";
+
+import StarRatingComponent from "react-star-rating-component";
 
 const JobItem = ({
     _id,
@@ -17,17 +21,35 @@ const JobItem = ({
     type,
     recruiter,
     buttonAction,
+    editJob,
+    deleteJob,
+    max_applications,
+    max_positions,
+    filled_applications,
+    filled_positions,
 }) => {
+    const history = useHistory();
+    const { session } = useContext(SessionContext);
+
     return (
         <Card className="d-flex flex-fill p-3">
             <CardHeader>
                 <div className="h3 font-weight-bold">{title}</div>
                 <div className="d-flex flex-column mb-3">
-                    <div className="text-muted fw-500">
-                        Posted {TimeSince(post_date)} ago by
-                        <span className="fw-700 ml-1">{recruiter.name}</span>
-                    </div>
-                    <div className="text-danger fw-500">{TimeUntil(deadline)} left to apply</div>
+                    {session.user.role === "applicant" && (
+                        <>
+                            <div className="text-muted fw-500">
+                                Posted {TimeSince(post_date)} ago by
+                                <span className="fw-700 ml-1">{recruiter.name}</span>
+                            </div>
+                            <div className="text-danger fw-500">
+                                {TimeUntil(deadline)} left to apply
+                            </div>
+                        </>
+                    )}
+                    {session.user.role === "recruiter" && (
+                        <div className="text-danger fw-500">Deadline in {TimeUntil(deadline)}</div>
+                    )}
                 </div>
             </CardHeader>
             <CardBody className="d-flex flex-fill flex-column justify-content-end py-1">
@@ -53,6 +75,26 @@ const JobItem = ({
                         </Badge>
                     ))}
                 </div>
+                {session.user.role === "recruiter" && (
+                    <>
+                        <div className="mt-3">
+                            Number of Applicants:
+                            <span className="fw-500">
+                                <span className="fw-700 mx-1">{filled_applications}</span>
+                                (max: {max_applications})
+                            </span>
+                        </div>
+                        <div className="mt-1">
+                            Remaining Positions:
+                            <span className="fw-500">
+                                <span className="fw-700 mx-1">
+                                    {max_positions - filled_positions}
+                                </span>
+                                (max: {max_positions})
+                            </span>
+                        </div>
+                    </>
+                )}
                 <div className="d-flex justify-content-between my-3">
                     <div className="text-secondary">
                         <div className="h4 fw-700 mb-0 pb-0">
@@ -98,18 +140,48 @@ const JobItem = ({
                     </div>
                 </div>
             </CardBody>
-            <CardFooter className="pt-0">
-                <Button
-                    disabled={["applied", "full"].includes(state)}
-                    outline={["applied", "full"].includes(state)}
-                    type="button"
-                    color={state === "full" ? "danger" : "primary"}
-                    className="fw-700 w-100 text-uppercase"
-                    onClick={() => buttonAction({ _id, title })}
-                >
-                    {state === "applied" ? "APPLIED" : state === "full" ? "FULL" : "APPLY"}
-                </Button>
-            </CardFooter>
+            {session.user.role === "applicant" && (
+                <CardFooter className="pt-0">
+                    <Button
+                        disabled={["applied", "full"].includes(state)}
+                        outline={["applied", "full"].includes(state)}
+                        type="button"
+                        color={state === "full" ? "danger" : "primary"}
+                        className="fw-700 w-100 text-uppercase"
+                        onClick={() => buttonAction({ _id, title })}
+                    >
+                        {state === "applied" ? "APPLIED" : state === "full" ? "FULL" : "APPLY"}
+                    </Button>
+                </CardFooter>
+            )}
+            {session.user.role === "recruiter" && (
+                <CardFooter className="pt-0 d-flex">
+                    <Button
+                        type="button"
+                        color="primary"
+                        className="fw-700 w-100 mr-1"
+                        onClick={() => history.push(`/listings/${_id}/applications`)}
+                    >
+                        VIEW APPLICATIONS
+                    </Button>
+                    <Button
+                        type="button"
+                        color="warning"
+                        className="fw-700 w-50 mx-1"
+                        onClick={() => editJob()}
+                    >
+                        EDIT
+                    </Button>
+                    <Button
+                        type="button"
+                        color="danger"
+                        className="fw-700 w-50 ml-1"
+                        onClick={() => deleteJob()}
+                    >
+                        DELETE
+                    </Button>
+                </CardFooter>
+            )}
         </Card>
     );
 };

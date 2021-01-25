@@ -32,24 +32,42 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
             max_applications: j.max_applications,
         }));
 
-        const allApplications = await Application.find({});
-        const applications = allApplications
-            .filter((a) => a.applicant.equals(req.user._id))
-            .map((a) => a.job.toString());
+        // applicants filter
+        if (req.user.details === "Applicant") {
+            const allApplications = await Application.find({});
+            const applications = allApplications
+                .filter((a) => a.applicant.equals(req.user._id))
+                .map((a) => a.job.toString());
 
-        jobs.forEach((j) => {
-            const filled = allApplications.filter(
-                (a) => a.job.equals(j._id) && a.state !== "deleted" // && a.state !== "rejected"
-            ).length;
-            if (filled >= j.max_applications || filled >= j.max_positions) {
-                j.state = "full";
-            }
-            if (req.user.details === "Applicant") {
+            jobs.forEach((j) => {
+                const filled = allApplications.filter(
+                    (a) => a.job.equals(j._id) && a.state !== "deleted" // && a.state !== "rejected"
+                ).length;
+                if (filled >= j.max_applications || filled >= j.max_positions) {
+                    j.state = "full";
+                }
                 if (applications.includes(j._id.toString())) {
                     j.state = "applied";
                 }
-            }
-        });
+            });
+        }
+
+        //recruiters filter
+        if (req.user.details === "Recruiter") {
+            const allApplications = await Application.find({});
+            jobs.forEach((j) => {
+                const applications = allApplications.filter(
+                    (a) => a.job.equals(j._id) && a.state !== "deleted" && a.state !== "rejected"
+                ).length;
+                const positions = allApplications.filter(
+                    (a) => a.job.equals(j._id) && a.state === "accepted"
+                ).length;
+                j.filled_applications = applications;
+                j.filled_positions = positions;
+            });
+
+            jobs = jobs.filter((j) => j.recruiter.equals(req.user._id));
+        }
 
         return res.status(200).json(jobs);
     } catch (e) {

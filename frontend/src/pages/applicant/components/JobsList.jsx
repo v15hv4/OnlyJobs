@@ -34,7 +34,7 @@ const JobsList = ({ jobs, refreshList }) => {
             />
             <Row>
                 {jobs.map((job, key) => (
-                    <Col sm={4} className="my-3 d-flex flex-fill" key={key}>
+                    <Col sm={4} md={6} className="my-3 d-flex flex-fill" key={key}>
                         <JobItem {...job} buttonAction={apply} />
                     </Col>
                 ))}

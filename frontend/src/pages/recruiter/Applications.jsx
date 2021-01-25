@@ -1,11 +1,11 @@
 import PageContainer from "components/PageContainer";
 
-const Employees = () => {
+const Applications = () => {
     return (
         <PageContainer navbar>
-            <h1> recruiter employees </h1>
+            <h1> job applications </h1>
         </PageContainer>
     );
 };
 
-export default Employees;
+export default Applications;
