@@ -1,4 +1,5 @@
 import { useReducer, useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 export const auth = {
@@ -49,6 +50,8 @@ const reducer = (state = initial, { type, response } = {}) => {
 };
 
 export const ManageSession = () => {
+    const history = useHistory();
+
     const [state, dispatch] = useReducer(reducer, initial);
 
     const session = useCallback(async () => {
@@ -64,21 +67,23 @@ export const ManageSession = () => {
         try {
             const response = await axios.post(auth.LOGIN, data, { headers: headers });
             dispatch({ type: "LOGIN", response: response.data });
+            history.push("/");
         } catch (err) {
             const error = err.response;
             dispatch({ type: "ERROR", response: error });
         }
-    }, []);
+    }, []); // eslint-disable-line
 
     const logout = useCallback(async () => {
         try {
             const response = await axios.get(auth.LOGOUT);
             dispatch({ type: "LOGOUT", response: response.data });
+            history.push("/");
         } catch (err) {
             const error = err.response;
             dispatch({ type: "ERROR", response: error });
         }
-    }, []);
+    }, []); // eslint-disable-line
 
     return [state, { session, login, logout }];
 };

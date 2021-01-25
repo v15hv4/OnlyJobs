@@ -17,8 +17,8 @@ const Navigation = () => {
     ];
 
     const recruiterItems = [
-        { to: "/dashboard", title: "Dashboard" },
-        { to: "/applications", title: "My Listings" },
+        { to: "/listings", title: "My Listings" },
+        { to: "/employees", title: "Employees" },
     ];
 
     // determine navitems based on logged in user's role

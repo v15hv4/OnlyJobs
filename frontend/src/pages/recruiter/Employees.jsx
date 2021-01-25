@@ -1,11 +1,11 @@
 import PageContainer from "components/PageContainer";
 
-const Dashboard = () => {
+const Employees = () => {
     return (
         <PageContainer>
-            <h1> recruiter dashboard </h1>
+            <h1> recruiter employees </h1>
         </PageContainer>
     );
 };
 
-export default Dashboard;
+export default Employees;

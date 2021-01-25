@@ -6,6 +6,8 @@ import * as Auth from "./pages/auth";
 import * as Applicant from "./pages/applicant";
 import * as Recruiter from "./pages/recruiter";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 export const SessionContext = createContext();
 
 const App = () => {
@@ -26,35 +28,34 @@ const App = () => {
     return (
         <SessionContext.Provider value={{ session, handlers }}>
             <Switch>
-                {/* auth routes */}
                 <Route exact path="/">
-                    {!session.user.role ? <Auth.Login /> : <Redirect to="/dashboard" />}
-                </Route>
-                <Route exact path="/signup">
-                    {!session.user.role ? <Auth.Signup /> : <Redirect to="/dashboard" />}
-                </Route>
-
-                {/* conditionally render dashboard */}
-                <Route exact path="/dashboard">
-                    {session.user.role === "applicant" ? (
-                        <Applicant.Dashboard />
-                    ) : session.user.role === "recruiter" ? (
-                        <Recruiter.Dashboard />
-                    ) : (
-                        <Redirect to="/" />
-                    )}
+                    {session.user.role === "applicant" && <Redirect replace to="/dashboard" />}
+                    {session.user.role === "recruiter" && <Redirect replace to="/listings" />}
+                    {!session.user.role && <Redirect replace to="/login" />}
                 </Route>
 
-                {/* conditionally render applications */}
-                <Route exact path="/applications">
-                    {session.user.role === "applicant" ? (
-                        <Applicant.Applications />
-                    ) : session.user.role === "recruiter" ? (
-                        <Recruiter.Applications />
-                    ) : (
-                        <Redirect to="/" />
-                    )}
-                </Route>
+                <ProtectedRoute exact path="/login" allowed={[""]}>
+                    <Auth.Login />
+                </ProtectedRoute>
+                <ProtectedRoute exact path="/signup" allowed={[""]}>
+                    <Auth.Signup />
+                </ProtectedRoute>
+
+                <ProtectedRoute exact path="/dashboard" allowed={["applicant"]}>
+                    <Applicant.Dashboard />
+                </ProtectedRoute>
+                <ProtectedRoute exact path="/applications" allowed={["applicant"]}>
+                    <Applicant.Applications />
+                </ProtectedRoute>
+
+                <ProtectedRoute exact path="/listings" allowed={["recruiter"]}>
+                    <Recruiter.Listings />
+                </ProtectedRoute>
+                <ProtectedRoute exact path="/employees" allowed={["recruiter"]}>
+                    <Recruiter.Employees />
+                </ProtectedRoute>
+
+                <Redirect to="/" />
             </Switch>
         </SessionContext.Provider>
     );
