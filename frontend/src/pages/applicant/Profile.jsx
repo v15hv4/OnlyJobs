@@ -63,7 +63,10 @@ const Profile = () => {
                                 </div>
                             </div>
                             <div className="mt-3">
-                                E-Mail Address: <code>{applicant.data[0].email}</code>
+                                E-Mail Address:
+                                <div>
+                                    <code>{applicant.data[0].email}</code>
+                                </div>
                             </div>
                             {applicant.data[0].skills.length ? (
                                 <div className="mt-2">

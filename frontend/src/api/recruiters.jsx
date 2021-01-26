@@ -39,7 +39,7 @@ const RecruiterService = () => {
                 cb: (res) =>
                     dispatch({
                         type: "SUCCESS",
-                        response: state.data.map((d) => (d._id === res._id ? res : d)),
+                        response: true,
                     }),
             });
         },
