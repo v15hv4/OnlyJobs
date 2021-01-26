@@ -14,7 +14,6 @@ const Profile = () => {
     const [recruiter, recruiterHandlers] = RecruiterService();
     useEffect(() => recruiterHandlers.view({ _id: session.user.id }), []);
 
-    const [current, setCurrent] = useState(null);
     const [success, setSuccess] = useState(false);
     const [modal, setModal] = useState(false);
     const toggleModal = () => {

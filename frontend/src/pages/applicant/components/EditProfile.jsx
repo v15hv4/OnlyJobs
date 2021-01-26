@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
     Modal,
     ModalHeader,
@@ -8,25 +8,36 @@ import {
     Button,
     Form,
     FormGroup,
-    FormFeedback,
-    Input,
     Label,
+    Input,
+    FormFeedback,
 } from "reactstrap";
 
-import RecruiterService from "api/recruiters";
+import { valid_email } from "pages/auth/components/validators";
+
+import ApplicantService from "api/applicants";
+import LanguageService from "api/languages";
+
+import CreatableSelect from "react-select/creatable";
 
 import ErrorAlert from "components/ErrorAlert";
 import SuccessAlert from "components/SuccessAlert";
-import { phone_number, word_limit, valid_email } from "pages/auth/components/validators";
+import EducationInputGroup from "./EducationInputGroup";
 
-const EditProfile = ({ modal, toggle, recruiter, successAlert, setSuccessAlert }) => {
-    const [job2, recruiterHandlers] = RecruiterService();
+const EditProfile = ({ modal, toggle, applicant, successAlert, setSuccessAlert }) => {
+    const [job2, applicantHandlers] = ApplicantService();
 
-    const { register, handleSubmit, errors, watch } = useForm();
+    const { register, handleSubmit, errors, control, watch } = useForm();
 
     // for password confirmation field verification
     const password = useRef({});
     password.current = watch("password", "");
+
+    const [education, setEducation] = useState([]);
+    const addEducation = () => setEducation([...education, EducationInputGroup]);
+
+    const [skills, skillsActions] = LanguageService();
+    useEffect(() => skillsActions.view(), []); // eslint-disable-line
 
     // control error alert
     const [errorAlert, setErrorAlert] = useState(false);
@@ -39,12 +50,22 @@ const EditProfile = ({ modal, toggle, recruiter, successAlert, setSuccessAlert }
         setSuccessAlert,
     ]);
 
-    useEffect(() => console.log(job2.data), [job2.data]);
+    const formattedSkills = () => {
+        if (skills.loading) return [{ value: "loading", error: "Loading..." }];
+        else if (skills.data) return skills.data.map((s) => ({ value: s._id, label: s.name }));
+        else return [{ value: "error", error: "Error loading skills!" }];
+    };
+
+    const addSkill = async (skill) => {
+        await skillsActions.add({ name: skill });
+        if (!skills.error) setSuccessAlert(`Language '${skill}' added to list!`);
+    };
 
     const onSubmit = async (data) => {
         var postData = {};
         Object.keys(data).forEach((k) => (data[k] ? (postData[k] = data[k]) : null));
-        await recruiterHandlers.edit(recruiter._id, postData);
+        if (data.skills) postData.skills = data.skills.map((s) => s.value);
+        await applicantHandlers.edit(applicant._id, postData);
     };
 
     return (
@@ -109,37 +130,44 @@ const EditProfile = ({ modal, toggle, recruiter, successAlert, setSuccessAlert }
                         <FormFeedback className="fw-700"> Passwords do not match! </FormFeedback>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="contact" className="fw-500 mb-1">
-                            Contact Number
-                        </Label>
-                        <Input
-                            invalid={errors.contact}
-                            type="text"
-                            name="contact"
-                            innerRef={register({
-                                validate: (v) => !v || phone_number(v),
-                            })}
-                            className="mild-border"
-                        />
-                        <FormFeedback className="fw-700"> Invalid contact number! </FormFeedback>
-                    </FormGroup>
-                    <FormGroup>
                         <Label for="education" className="fw-500 mb-1">
-                            Bio
+                            Education
                         </Label>
-                        <Input
-                            invalid={errors.bio}
-                            type="textarea"
-                            name="bio"
-                            rows={5}
-                            innerRef={register({
-                                validate: (v) => !v || word_limit(v, 250),
-                            })}
-                            className="mild-border"
+                        {education.map((E, idx) => (
+                            <E
+                                idx={idx}
+                                key={idx}
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                            />
+                        ))}
+                    </FormGroup>
+                    <Button
+                        outline
+                        color="light"
+                        onClick={addEducation}
+                        className="w-100 mb-4 text-dark"
+                    >
+                        + ADD
+                    </Button>
+                    <FormGroup>
+                        <Label for="skills" className="fw-500 mb-1">
+                            Skills
+                        </Label>
+                        <Controller
+                            name="skills"
+                            options={formattedSkills()}
+                            control={control}
+                            as={CreatableSelect}
+                            isClearable
+                            isDisabled={skills.loading}
+                            isLoading={skills.loading}
+                            onCreateOption={addSkill}
+                            defaultValue=""
+                            placeholder="Search..."
+                            isMulti
                         />
-                        <FormFeedback className="fw-700">
-                            A bio (of not more than 250 words) is required!
-                        </FormFeedback>
                     </FormGroup>
                     {errorAlert && <ErrorAlert message={errorAlert.data.message} />}
                     {successAlert && <SuccessAlert message={successAlert} />}

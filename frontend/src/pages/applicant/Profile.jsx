@@ -1,11 +1,12 @@
 import { useEffect, useState, useContext } from "react";
-import { Row, Col, Container, Badge } from "reactstrap";
+import { Row, Col, Container, Badge, Button } from "reactstrap";
 
 import { SessionContext } from "App";
 import ApplicantService from "api/applicants";
 
 import PageContainer from "components/PageContainer";
 import LoadingIndicator from "components/LoadingIndicator";
+import EditProfile from "./components/EditProfile";
 
 import StarRatingComponent from "react-star-rating-component";
 
@@ -15,8 +16,25 @@ const Profile = () => {
     const [applicant, applicantHandlers] = ApplicantService();
     useEffect(() => applicantHandlers.view({ _id: session.user.id }), []);
 
+    const [success, setSuccess] = useState(false);
+    const [modal, setModal] = useState(false);
+    const toggleModal = () => {
+        if (success) {
+            applicantHandlers.view({ _id: session.user.id });
+            setSuccess(false);
+        }
+        setModal(!modal);
+    };
+
     return (
         <PageContainer navbar>
+            <EditProfile
+                modal={modal}
+                toggle={toggleModal}
+                applicant={applicant.data && applicant.data[0]}
+                successAlert={success}
+                setSuccessAlert={setSuccess}
+            />
             <Row>
                 <Col className="pt-5">
                     {!applicant.loading ? (
@@ -80,6 +98,14 @@ const Profile = () => {
                                     </div>
                                 </div>
                             ) : null}
+                            <Button
+                                color="warning"
+                                type="buton"
+                                onClick={toggleModal}
+                                className="fw-700 mt-5"
+                            >
+                                EDIT PROFILE
+                            </Button>
                         </Container>
                     ) : (
                         <LoadingIndicator />

@@ -52,6 +52,8 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
                     j.state = "applied";
                 }
             });
+
+            jobs = jobs.filter((j) => new Date(j.deadline) > new Date());
         }
 
         //recruiters filter
