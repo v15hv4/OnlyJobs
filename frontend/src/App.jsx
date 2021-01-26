@@ -47,6 +47,9 @@ const App = () => {
                 <ProtectedRoute exact path="/applications" allowed={["applicant"]}>
                     <Applicant.Applications />
                 </ProtectedRoute>
+                <ProtectedRoute exact path="/profile" allowed={["applicant"]}>
+                    <Applicant.Profile />
+                </ProtectedRoute>
 
                 <ProtectedRoute exact path="/listings" allowed={["recruiter"]}>
                     <Recruiter.Listings />
