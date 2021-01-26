@@ -29,9 +29,9 @@ const ApplicationsList = ({ applications, refreshList }) => {
                 ← GO BACK
             </Button>
             <Row className="mt-3">
-                {applications.map((application) => (
+                {applications.map((application, idx) => (
                     <Col md={6} className="mb-4 d-flex flex-fill">
-                        <ApplicationItem {...application} refreshList={refreshList} />
+                        <ApplicationItem key={idx} {...application} refreshList={refreshList} />
                     </Col>
                 ))}
             </Row>
