@@ -103,6 +103,21 @@ const EmployeeItem = ({ _id, join_date, job, applicant, refreshList }) => {
                 <div className="mt-3">
                     E-Mail Address: <code>{applicant.email}</code>
                 </div>
+
+                {applicant.education.length ? (
+                    <div className="mt-2">
+                        Education:
+                        <div className="mt-1">
+                            {applicant.education.map((s) => (
+                                <div>
+                                    -<span className="fw-700 mx-2">{s.name}</span>
+                                    (from {new Date(s.start_year).getFullYear()}{" "}
+                                    {s.end_year && `to ${new Date(s.end_year).getFullYear()}`})
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ) : null}
                 {applicant.skills.length ? (
                     <div className="mt-2">
                         Skills:

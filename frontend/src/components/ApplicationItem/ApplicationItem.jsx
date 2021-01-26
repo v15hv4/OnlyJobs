@@ -218,49 +218,53 @@ const ApplicationItem = ({
                                 {new Date(join_date).toLocaleDateString()}
                             </span>
                         </div>
-                        <div className="text-dark d-flex align-items-start justify-content-center flex-column salary-container">
-                            <StarRatingComponent
-                                name={"rating-" + _id}
-                                onStarClick={handleRating}
-                                className="mt-2"
-                                starColor="#ffb400"
-                                emptyStarColor="#ffb400"
-                                value={currentRating && currentRating.value}
-                                starCount={5}
-                                renderStarIcon={(index, value) => {
-                                    return (
-                                        <span>
-                                            <i
-                                                className={
-                                                    index <= value ? "fas fa-star" : "far fa-star"
-                                                }
-                                            />
-                                        </span>
-                                    );
-                                }}
-                                renderStarIconHalf={() => {
-                                    return (
-                                        <span>
-                                            <span style={{ position: "absolute" }}>
-                                                <i className="far fa-star" />
-                                            </span>
+                        {session.user.role === "applicant" ? (
+                            <div className="text-dark d-flex align-items-start justify-content-center flex-column salary-container">
+                                <StarRatingComponent
+                                    name={"rating-" + _id}
+                                    onStarClick={handleRating}
+                                    className="mt-2"
+                                    starColor="#ffb400"
+                                    emptyStarColor="#ffb400"
+                                    value={currentRating && currentRating.value}
+                                    starCount={5}
+                                    renderStarIcon={(index, value) => {
+                                        return (
                                             <span>
-                                                <i className="fas fa-star-half" />
+                                                <i
+                                                    className={
+                                                        index <= value
+                                                            ? "fas fa-star"
+                                                            : "far fa-star"
+                                                    }
+                                                />
                                             </span>
-                                        </span>
-                                    );
-                                }}
-                            />
-                            {successAlert && (
-                                <SuccessAlert
-                                    message={successAlert}
-                                    className="px-2 py-0 m-0 mt-n1"
+                                        );
+                                    }}
+                                    renderStarIconHalf={() => {
+                                        return (
+                                            <span>
+                                                <span style={{ position: "absolute" }}>
+                                                    <i className="far fa-star" />
+                                                </span>
+                                                <span>
+                                                    <i className="fas fa-star-half" />
+                                                </span>
+                                            </span>
+                                        );
+                                    }}
                                 />
-                            )}
-                            {errorAlert && (
-                                <ErrorAlert message={errorAlert} className="px-2 py-1 m-0" />
-                            )}
-                        </div>
+                                {successAlert && (
+                                    <SuccessAlert
+                                        message={successAlert}
+                                        className="px-2 py-0 m-0 mt-n1"
+                                    />
+                                )}
+                                {errorAlert && (
+                                    <ErrorAlert message={errorAlert} className="px-2 py-1 m-0" />
+                                )}
+                            </div>
+                        ) : null}
                     </div>
                 ) : null}
                 <div

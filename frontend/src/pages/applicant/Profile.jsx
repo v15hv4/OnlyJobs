@@ -86,6 +86,22 @@ const Profile = () => {
                                     <code>{applicant.data[0].email}</code>
                                 </div>
                             </div>
+                            {applicant.data[0].education.length ? (
+                                <div className="mt-2">
+                                    Education:
+                                    <div className="mt-1">
+                                        {applicant.data[0].education.map((s) => (
+                                            <div>
+                                                -<span className="fw-700 mx-2">{s.name}</span>
+                                                (from {new Date(s.start_year).getFullYear()}{" "}
+                                                {s.end_year &&
+                                                    `to ${new Date(s.end_year).getFullYear()}`}
+                                                )
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : null}
                             {applicant.data[0].skills.length ? (
                                 <div className="mt-2">
                                     Skills:
