@@ -10,8 +10,6 @@ const Applications = () => {
     const [applications, applicationsHandlers] = ApplicationsService();
     useEffect(() => applicationsHandlers.view(), []); // eslint-disable-line
 
-    useEffect(() => console.log(applications.data), [applications]);
-
     return (
         <PageContainer navbar>
             <Row className="body-height overflow-auto">

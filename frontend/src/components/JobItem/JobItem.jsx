@@ -156,18 +156,20 @@ const JobItem = ({
             )}
             {session.user.role === "recruiter" && (
                 <CardFooter className="pt-0 d-flex">
-                    <Button
-                        type="button"
-                        color="primary"
-                        className="fw-700 w-100 mr-1"
-                        onClick={() => history.push(`/listings/${_id}/applications`)}
-                    >
-                        VIEW APPLICATIONS
-                    </Button>
+                    {filled_applications ? (
+                        <Button
+                            type="button"
+                            color="primary"
+                            className="fw-700 w-100 mr-2"
+                            onClick={() => history.push(`/listings/${_id}/applications`)}
+                        >
+                            VIEW APPLICATIONS
+                        </Button>
+                    ) : null}
                     <Button
                         type="button"
                         color="warning"
-                        className="fw-700 w-50 mx-2"
+                        className="fw-700 w-50"
                         onClick={() =>
                             editJob({
                                 _id,
@@ -187,7 +189,7 @@ const JobItem = ({
                     <Button
                         type="button"
                         color="danger"
-                        className="fw-700 w-50 ml-1"
+                        className="fw-700 w-50 ml-2"
                         onClick={() => deleteJob(_id)}
                     >
                         DELETE

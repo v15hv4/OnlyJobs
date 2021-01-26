@@ -52,6 +52,7 @@ const JobSchema = new Schema({
         type: Number,
         required: true,
         min: 0,
+        max: 6,
     },
     salary: {
         type: Number,

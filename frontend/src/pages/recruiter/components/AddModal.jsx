@@ -82,6 +82,7 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                     <FormGroup>
                         <Label for="title"> Title </Label>
                         <Input
+                            invalid={errors.title}
                             name="title"
                             type="text"
                             className="mild-border"
@@ -97,10 +98,11 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                     <FormGroup>
                         <Label for="salary"> Salary (per month) </Label>
                         <Input
+                            invalid={errors.salary}
                             name="salary"
                             type="number"
                             className="mild-border"
-                            innerRef={register({ required: "Salary is required!" })}
+                            innerRef={register({ required: "Salary is required!", min: 0 })}
                         />
                         <FormFeedback>{errors.salary && errors.salary.message}</FormFeedback>
                     </FormGroup>
@@ -109,10 +111,14 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                             <FormGroup>
                                 <Label for="deadline"> Deadline </Label>
                                 <Input
+                                    invalid={errors.deadline}
                                     name="deadline"
                                     type="date"
                                     className="mild-border"
-                                    innerRef={register({ required: "This field is required!" })}
+                                    innerRef={register({
+                                        required: "This field is required!",
+                                        validate: (v) => new Date(v) >= new Date(),
+                                    })}
                                 />
                                 <FormFeedback>
                                     {errors.deadline && errors.deadline.message}
@@ -123,10 +129,14 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                             <FormGroup>
                                 <Label for="duration"> Duration (in months) </Label>
                                 <Input
+                                    invalid={errors.duration}
                                     name="duration"
                                     type="number"
                                     className="mild-border"
-                                    innerRef={register({ required: "Duration is required!" })}
+                                    innerRef={register({
+                                        required: "Duration is required!",
+                                        validate: (v) => 0 <= v && v < 7,
+                                    })}
                                 />
                                 <FormFeedback>
                                     {errors.duration && errors.duration.message}
@@ -139,10 +149,14 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                             <FormGroup>
                                 <Label for="max_applications"> Maximum applications allowed </Label>
                                 <Input
+                                    invalid={errors.max_applications}
                                     name="max_applications"
                                     type="number"
                                     className="mild-border"
-                                    innerRef={register({ required: "This field is required!" })}
+                                    innerRef={register({
+                                        required: "This field is required!",
+                                        min: 1,
+                                    })}
                                 />
                                 <FormFeedback>
                                     {errors.max_applications && errors.max_applications.message}
@@ -153,10 +167,14 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
                             <FormGroup>
                                 <Label for="max_positions"> Maximum positions available </Label>
                                 <Input
+                                    invalid={errors.max_positions}
                                     name="max_positions"
                                     type="number"
                                     className="mild-border"
-                                    innerRef={register({ required: "This field is required!" })}
+                                    innerRef={register({
+                                        required: "This field is required!",
+                                        min: 1,
+                                    })}
                                 />
                                 <FormFeedback>
                                     {errors.max_positions && errors.max_positions.message}
