@@ -69,7 +69,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
             jobs = jobs.filter((j) => j.recruiter.equals(req.user._id));
         }
 
-        return res.status(200).json(jobs);
+        return res.status(200).json(jobs.reverse());
     } catch (e) {
         return res.status(500).json(e);
     }
@@ -88,9 +88,18 @@ router.post("/new", async (req, res) => {
             type: req.body.type,
             duration: req.body.duration,
             salary: req.body.salary,
-            rating: req.body.rating,
         });
         const job = await newJob.save();
+        return res.status(200).json(job);
+    } catch (e) {
+        return res.status(500).json(e);
+    }
+});
+
+// edit job details
+router.post("/edit/:id", async (req, res) => {
+    try {
+        const job = await Job.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
         return res.status(200).json(job);
     } catch (e) {
         return res.status(500).json(e);

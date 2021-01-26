@@ -5,6 +5,7 @@ import axios from "axios";
 const endpoints = {
     VIEW: "/api/jobs",
     ADD: "/api/jobs/new",
+    EDIT: "/api/jobs/edit",
     DELETE: "/api/jobs/delete",
     RATE: "/api/jobs/rate",
 };
@@ -38,7 +39,19 @@ const JobService = () => {
                 method: "post",
                 endpoint: endpoints.ADD,
                 data: data,
-                cb: (res) => dispatch({ type: "SUCCESS", response: [...state.data, res.data] }),
+                cb: (res) => dispatch({ type: "SUCCESS", response: res.data }),
+            });
+        },
+        edit: async (id, data) => {
+            return await makeRequest({
+                method: "post",
+                endpoint: `${endpoints.EDIT}/${id}`,
+                data: data,
+                cb: (res) =>
+                    dispatch({
+                        type: "SUCCESS",
+                        response: res.data,
+                    }),
             });
         },
         delete: async (id) => {

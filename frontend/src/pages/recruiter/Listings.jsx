@@ -13,7 +13,14 @@ const Listings = () => {
     return (
         <PageContainer navbar>
             <Row className="body-height overflow-auto">
-                <Col className="mt-5">{!jobs.loading && <JobsList jobs={jobs.data} />}</Col>
+                <Col className="mt-5">
+                    {!jobs.loading && (
+                        <JobsList
+                            jobs={jobs.data}
+                            refreshList={() => jobHandlers.view({ state: "available" })}
+                        />
+                    )}
+                </Col>
             </Row>
         </PageContainer>
     );

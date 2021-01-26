@@ -167,8 +167,20 @@ const JobItem = ({
                     <Button
                         type="button"
                         color="warning"
-                        className="fw-700 w-50 mx-1"
-                        onClick={() => editJob()}
+                        className="fw-700 w-50 mx-2"
+                        onClick={() =>
+                            editJob({
+                                _id,
+                                title,
+                                type,
+                                salary,
+                                duration,
+                                deadline,
+                                max_applications,
+                                max_positions,
+                                skillset,
+                            })
+                        }
                     >
                         EDIT
                     </Button>
@@ -176,7 +188,7 @@ const JobItem = ({
                         type="button"
                         color="danger"
                         className="fw-700 w-50 ml-1"
-                        onClick={() => deleteJob()}
+                        onClick={() => deleteJob(_id)}
                     >
                         DELETE
                     </Button>
