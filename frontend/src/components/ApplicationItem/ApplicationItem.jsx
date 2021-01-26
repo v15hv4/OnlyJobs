@@ -55,11 +55,12 @@ const ApplicationItem = ({
                         </div>
                     </div>
                     <div className="text-dark d-flex align-items-center justify-content-end salary-container">
+                        {console.log(applicant.rating)}
                         <StarRatingComponent
-                            className="d-flex align-items-center mt-2"
+                            className="mt-2"
                             editing={false}
                             starColor="#ffb400"
-                            emptyStarColor="#ffb400"
+                            emptyStarColor="#aaaaaa"
                             value={applicant.rating.value}
                             starCount={5}
                             renderStarIcon={(index, value) => {

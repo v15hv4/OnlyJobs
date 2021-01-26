@@ -1,21 +1,50 @@
+import { useContext, useState, useEffect } from "react";
 import { Card, CardBody, CardHeader, CardFooter, Badge, Button } from "reactstrap";
+
+import { SessionContext } from "App";
+import ApplicantService from "api/applicants";
+import SuccessAlert from "components/SuccessAlert";
+import ErrorAlert from "components/ErrorAlert";
 
 import StarRatingComponent from "react-star-rating-component";
 
 const EmployeeItem = ({ _id, join_date, job, applicant, refreshList }) => {
+    const { session } = useContext(SessionContext);
+    const [rateApplicant, applicantHandlers] = ApplicantService();
+    const [successAlert, setSuccessAlert] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
+    const [currentRating, setCurrentRating] = useState(0);
+
+    useEffect(() => {
+        setCurrentRating(applicant.ratings.filter((r) => r.recruiter === session.user.id)[0]);
+    }, [applicant.ratings]); // eslint-disable-line
+
+    useEffect(() => {
+        if (rateApplicant.data) {
+            setSuccessAlert("Rated employee.");
+        } else if (rateApplicant.error) {
+            setErrorAlert("An error occurred.");
+        }
+    }, [rateApplicant.data, rateApplicant.error]);
+
+    const handleRating = async (e) => {
+        setCurrentRating(e);
+        await applicantHandlers.rate(applicant._id, { rating: e });
+    };
+
     return (
         <Card className="d-flex flex-fill p-3">
             <CardHeader className="d-flex justify-content-between">
                 <div>
                     <div className="h3 font-weight-bold">{applicant.name}</div>
                 </div>
-                <div className="text-dark d-flex align-items-center justify-content-end salary-container">
+                <div className="text-dark d-flex align-items-end flex-column justify-content-center salary-container">
                     <StarRatingComponent
-                        className="d-flex align-items-center mt-2"
-                        editing={false}
+                        name={"rating-" + _id}
+                        onStarClick={handleRating}
                         starColor="#ffb400"
                         emptyStarColor="#ffb400"
-                        value={applicant.rating.value}
+                        value={currentRating && currentRating.value}
                         starCount={5}
                         renderStarIcon={(index, value) => {
                             return (
@@ -37,6 +66,10 @@ const EmployeeItem = ({ _id, join_date, job, applicant, refreshList }) => {
                             );
                         }}
                     />
+                    {successAlert && (
+                        <SuccessAlert message={successAlert} className="px-2 py-0 m-0 mt-n1" />
+                    )}
+                    {errorAlert && <ErrorAlert message={errorAlert} className="px-2 py-1 m-0" />}
                 </div>
             </CardHeader>
             <CardBody>
