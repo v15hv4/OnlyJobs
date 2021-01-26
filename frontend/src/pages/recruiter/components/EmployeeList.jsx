@@ -18,7 +18,7 @@ const EmployeesList = ({ employees, refreshList }) => {
         );
     return (
         <Container fluid>
-            <Row className="mt-3">
+            <Row>
                 {employees.map((employee, idx) => (
                     <Col md={6} className="mb-4 d-flex flex-fill">
                         <EmployeeItem key={idx} {...employee} refreshList={refreshList} />
