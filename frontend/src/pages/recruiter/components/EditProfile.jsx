@@ -39,8 +39,6 @@ const EditProfile = ({ modal, toggle, recruiter, successAlert, setSuccessAlert }
         setSuccessAlert,
     ]);
 
-    useEffect(() => console.log(job2.data), [job2.data]);
-
     const onSubmit = async (data) => {
         var postData = {};
         Object.keys(data).forEach((k) => (data[k] ? (postData[k] = data[k]) : null));

@@ -9,7 +9,6 @@ const ProtectedRoute = ({ children, allowed, ...rest }) => {
         <Route
             {...rest}
             render={() => {
-                console.log(allowed);
                 if (!allowed.includes(session.user.role)) return <Redirect to="/" />;
                 else return children;
             }}

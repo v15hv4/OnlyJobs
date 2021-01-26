@@ -50,8 +50,6 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
         if (!skills.error) setSuccessAlert(`Language '${skill}' added to list!`);
     };
 
-    useEffect(() => console.log(job), [job]);
-
     // control error alert
     const [errorAlert, setErrorAlert] = useState(false);
     useEffect(() => setErrorAlert(false), [job]);
@@ -70,7 +68,6 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
             recruiter: session.user.id,
             skillset: data.skillset.map((s) => s.value),
         };
-        console.log(postData);
         await jobHandlers.add(postData);
     };
 

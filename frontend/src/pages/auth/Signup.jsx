@@ -46,8 +46,6 @@ const Signup = () => {
     role.current = watch("role", "");
 
     const onSubmit = async (data) => {
-        console.log(data);
-
         var rawData = { ...data, role: data.role.value };
         var postData = rawData;
 
@@ -71,8 +69,6 @@ const Signup = () => {
             // generate final rawData to post to server
             postData = { ...rawData, education: educationList, skills: skillsList };
         }
-
-        console.log(postData);
 
         await HandleRegister(postData, async (e, _res) => {
             if (e) setErrorAlert(e.data.message);

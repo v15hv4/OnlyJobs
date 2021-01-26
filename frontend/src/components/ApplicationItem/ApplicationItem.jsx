@@ -110,7 +110,6 @@ const ApplicationItem = ({
                                 );
                             }}
                         />
-                        {console.log(applicant)}
                         <div className="ml-1 text-muted">({applicant.rating.amount})</div>
                     </div>
                 </CardHeader>

@@ -22,8 +22,6 @@ const App = () => {
         fetchSession();
     }, []); // eslint-disable-line
 
-    console.log(session.user);
-
     if (loading) return null; // TODO: loading indicator / page
     return (
         <SessionContext.Provider value={{ session, handlers }}>
