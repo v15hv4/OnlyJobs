@@ -70,10 +70,10 @@ const JobService = () => {
                 method: "post",
                 endpoint: `${endpoints.RATE}/${id}`,
                 data: data,
-                cb: (res) =>
+                cb: () =>
                     dispatch({
                         type: "SUCCESS",
-                        response: state.data.map((d) => (d._id === res._id ? res : d)),
+                        response: true,
                     }),
             });
         },

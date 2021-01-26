@@ -105,7 +105,6 @@ const JobItem = ({
                     <div className="d-flex my-auto ">
                         <div className="h5 my-auto">
                             <StarRatingComponent
-                                className="d-flex align-items-center"
                                 editing={false}
                                 starColor="#ffb400"
                                 emptyStarColor="#ffb400"

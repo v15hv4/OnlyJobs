@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
                 name: j.name,
                 skills: j.skills,
                 rating: {
-                    value: totalValue,
+                    value: totalValue / j.ratings.length,
                     amount: j.ratings.length,
                 },
             };
@@ -58,10 +58,6 @@ router.post("/rate/:id", passport.authenticate("jwt", { session: false }), async
             { $push: { ratings: { value: req.body.rating, recruiter: req.user._id } } },
             { new: true }
         );
-        console.log(req.params.id);
-        console.log(req.body.rating);
-        console.log(req.user._id);
-        console.log(applicant);
         return res.status(200).json(applicant);
     } catch (e) {
         return res.status(500).json(e);
