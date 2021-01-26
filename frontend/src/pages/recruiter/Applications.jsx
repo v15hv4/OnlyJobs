@@ -6,6 +6,7 @@ import ApplicationsService from "api/applications";
 
 import PageContainer from "components/PageContainer";
 import ApplicationsList from "./components/ApplicationsList";
+import LoadingIndicator from "components/LoadingIndicator";
 
 const Applications = () => {
     const { id } = useParams();
@@ -18,11 +19,13 @@ const Applications = () => {
         <PageContainer navbar>
             <Row className="body-height overflow-auto">
                 <Col className="mt-5">
-                    {!applications.loading && (
+                    {!applications.loading ? (
                         <ApplicationsList
                             applications={applications.data}
                             refreshList={() => applicationsHandlers.view({ job: id })}
                         />
+                    ) : (
+                        <LoadingIndicator />
                     )}
                 </Col>
             </Row>

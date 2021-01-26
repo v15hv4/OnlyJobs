@@ -7,6 +7,7 @@ import PageContainer from "components/PageContainer";
 import JobsList from "./components/JobsList";
 import Searchbar from "components/Searchbar";
 import SortFilterSidebar from "components/SortFilterSidebar";
+import LoadingIndicator from "components/LoadingIndicator";
 
 const Dashboard = () => {
     const [jobs, jobHandlers] = JobService();
@@ -80,11 +81,13 @@ const Dashboard = () => {
                         setSearchTerm={setSearchTerm}
                         className="mb-3 mild-shadow"
                     />
-                    {!jobs.loading && (
+                    {!jobs.loading ? (
                         <JobsList
                             jobs={filteredList}
                             refreshList={() => jobHandlers.view({ state: "available" })}
                         />
+                    ) : (
+                        <LoadingIndicator />
                     )}
                 </Col>
             </Row>

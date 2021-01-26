@@ -5,6 +5,7 @@ import JobService from "api/jobs";
 
 import PageContainer from "components/PageContainer";
 import JobsList from "./components/JobsList";
+import LoadingIndicator from "components/LoadingIndicator";
 
 const Listings = () => {
     const [jobs, jobHandlers] = JobService();
@@ -14,11 +15,13 @@ const Listings = () => {
         <PageContainer navbar>
             <Row className="body-height overflow-auto">
                 <Col className="mt-5">
-                    {!jobs.loading && (
+                    {!jobs.loading ? (
                         <JobsList
                             jobs={jobs.data}
                             refreshList={() => jobHandlers.view({ state: "available" })}
                         />
+                    ) : (
+                        <LoadingIndicator />
                     )}
                 </Col>
             </Row>
