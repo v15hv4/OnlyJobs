@@ -4,7 +4,7 @@ import { Row, Col, Container, Button } from "reactstrap";
 import NullIndicator from "components/NullIndicator";
 import ApplicationItem from "components/ApplicationItem";
 
-const ApplicationsList = ({ applications }) => {
+const ApplicationsList = ({ applications, refreshList }) => {
     if (!applications.length)
         return (
             <NullIndicator>
@@ -31,7 +31,7 @@ const ApplicationsList = ({ applications }) => {
             <Row className="mt-3">
                 {applications.map((application) => (
                     <Col md={6} className="mb-4 d-flex flex-fill">
-                        <ApplicationItem {...application} />
+                        <ApplicationItem {...application} refreshList={refreshList} />
                     </Col>
                 ))}
             </Row>

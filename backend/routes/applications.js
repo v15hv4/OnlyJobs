@@ -19,7 +19,9 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
                 applications = applications.filter((a) => a.applicant.equals(req.user._id));
                 break;
             case "Recruiter":
-                applications = applications.filter((a) => a.job.recruiter.equals(req.user._id));
+                applications = applications.filter(
+                    (a) => a.job.recruiter.equals(req.user._id) && a.state !== "rejected"
+                );
                 break;
             default:
                 break;
