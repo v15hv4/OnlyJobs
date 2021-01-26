@@ -40,7 +40,6 @@ const JobsList = ({ jobs, refreshList }) => {
         refreshList();
     };
 
-    if (!jobs.length) return <NullIndicator> No results found. </NullIndicator>;
     return (
         <Container fluid>
             <AddModal
@@ -65,13 +64,17 @@ const JobsList = ({ jobs, refreshList }) => {
             >
                 + NEW LISTING
             </Button>
-            <Row>
-                {jobs.map((job, key) => (
-                    <Col sm={4} md={6} className="my-3 d-flex flex-fill" key={key}>
-                        <JobItem {...job} editJob={edit} deleteJob={delet} />
-                    </Col>
-                ))}
-            </Row>
+            {!jobs.length ? (
+                <NullIndicator> No results found. </NullIndicator>
+            ) : (
+                <Row>
+                    {jobs.map((job, key) => (
+                        <Col sm={4} md={6} className="my-3 d-flex flex-fill" key={key}>
+                            <JobItem {...job} editJob={edit} deleteJob={delet} />
+                        </Col>
+                    ))}
+                </Row>
+            )}
         </Container>
     );
 };

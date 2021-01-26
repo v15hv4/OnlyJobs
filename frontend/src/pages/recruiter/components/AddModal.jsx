@@ -47,7 +47,6 @@ const AddModal = ({ modal, toggle, successAlert, setSuccessAlert }) => {
 
     const addSkill = async (skill) => {
         await skillsActions.add({ name: skill });
-        if (!skills.error) setSuccessAlert(`Language '${skill}' added to list!`);
     };
 
     // control error alert
