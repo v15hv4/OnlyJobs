@@ -1,8 +1,11 @@
-# OnlyJobs
-> A job application portal following REST principles, built with the MERN stack.
+<p align="center">
+<img src="https://cdn.discordapp.com/attachments/785528722882560030/804355587017408592/onlyjobs_full.svg" height="150px"/>
+<br>
+A job application portal following REST principles, built on a MERN stack.
+</p>
 
 ## About
-> A Job Application Portal following where usershave the option to search and apply for various job profiles while showcasing their skillset.
+> A Job Application Portal following where users have the option to search and apply for various job profiles while showcasing their skillset.
 At the same time, recruiters from various companies have the ability to create job listings based on their requirement for various skill sets, experiences.
 
 ## Requirements
